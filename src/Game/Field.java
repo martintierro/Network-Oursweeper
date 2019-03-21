@@ -17,7 +17,7 @@ public class Field{
         }
     }
 
-    public ArrayList<Tile> getField(){
+    public ArrayList<Tile> getTiles(){
         return tiles;
     }
 
