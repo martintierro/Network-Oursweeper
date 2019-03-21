@@ -39,7 +39,7 @@
             <Font name="Chalkduster" size="23.0" />
          </font>
       </TextField>
-      <TextField fx:id="passwordTextField" layoutX="280.0" layoutY="452.0" opacity="0.5" prefHeight="49.0" prefWidth="269.0" promptText="ip address">
+      <TextField fx:id="addressTextField" layoutX="280.0" layoutY="452.0" opacity="0.5" prefHeight="49.0" prefWidth="269.0" promptText="ip address">
          <effect>
             <Blend />
          </effect>
@@ -47,7 +47,7 @@
             <Font name="Chalkduster" size="24.0" />
          </font>
       </TextField>
-      <Button fx:id="playButton" layoutX="266.0" layoutY="543.0" mnemonicParsing="false" opacity="0.8" text="Play">
+      <Button fx:id="playButton" layoutX="266.0" layoutY="543.0" mnemonicParsing="false" onAction="#clickPlay" opacity="0.8" text="Play">
          <font>
             <Font name="Chalkduster" size="18.0" />
          </font>
