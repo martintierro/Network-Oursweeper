@@ -26,6 +26,8 @@ public class UDPServer {
             DatagramPacket sendPacket =
                     new DatagramPacket(sendData, sendData.length, IPAddress, port);
 
+            System.out.println("FROM CLIENT: " + sentence);
+
             serverSocket.send(sendPacket);
         }
     }
