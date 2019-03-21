@@ -25,7 +25,4 @@ public class Player extends Model{
         this.alive = alive;
     }
 
-
-
-
 }
