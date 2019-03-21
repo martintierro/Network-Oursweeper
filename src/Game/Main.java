@@ -13,7 +13,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Bomb Sweeper");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Game/login.fxml"));
-        fxmlLoader.setController(new LoginView());
+        //fxmlLoader.setController(new LoginView());
         Parent root = fxmlLoader.load();
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.setResizable(false);

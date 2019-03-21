@@ -19,9 +19,8 @@ public class LoginView extends View {
     TextField usernameTextField, addressTextField;
     Button playButton;
 
-    public void clickPlay(ActionEvent actionEvent) throws Exception{
+
+    public void clickPlay(javafx.event.ActionEvent actionEvent) throws Exception{
         System.out.println("Play Button Clicked!");
-        System.out.println("Username: " +usernameTextField.getText());
-        System.out.println("IP Address: " +addressTextField.getText());
     }
 }
