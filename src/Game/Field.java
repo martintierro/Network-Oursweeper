@@ -1,9 +1,10 @@
 package Game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Field extends Model{
+public class Field{
     private ArrayList<Tile> tiles;
     Random random = new Random();
 
@@ -30,20 +31,6 @@ public class Field extends Model{
 
     public boolean tileIsBomb(int i){
         return tiles.get(i).isBomb();
-    }
-
-    public void display(){
-        int count = 0;
-        for(Tile tile: tiles){
-            if(tile.isBomb())
-                count++;
-        }
-        System.out.println(count);
-    }
-
-    public static void main (String[] args){
-        Field field = new Field();
-        field.display();
     }
 
 }

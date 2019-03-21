@@ -1,6 +1,6 @@
 package Game;
 
-public class Player extends Model{
+public class Player{
     private String name;
     private boolean alive;
 

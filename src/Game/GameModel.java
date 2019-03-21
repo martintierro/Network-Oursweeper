@@ -1,7 +1,49 @@
 package Game;
 
+import java.util.ArrayList;
+
 public class GameModel extends Model{
+    private Field field;
+    private ArrayList<Player> players;
+    private Player currentPlayer;
 
+    public GameModel(ArrayList<Player> players){
+        field = new Field();
+        this.players = players;
+    }
 
+    public Field getField() {
+        return field;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
+
+    public boolean checkIfOver(){
+        int numAlive = 0;
+        for(Player player: players)
+            if(player.isAlive())
+                numAlive++;
+        if(numAlive == 1)
+            return true;
+        return false;
+    }
 
 }
