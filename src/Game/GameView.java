@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
@@ -21,6 +22,9 @@ public class GameView extends View
 {
     @FXML
     AnchorPane anchorPane;
+
+    @FXML
+    BorderPane borderPane;
 
         public GameView(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Game/field.fxml"));
@@ -41,10 +45,12 @@ public class GameView extends View
             button.setGraphic(dirtTile);
             button.setPrefSize(50.0, 50.0);
             tilePane.getChildren().add(button);
+            tilePane.setPrefTileHeight(50);
+            tilePane.setPrefTileWidth(50);
         }
 
       //  Scene scene = new Scene(tilePane, 450,450);
-        anchorPane.getChildren().add(tilePane);
+        borderPane.setCenter(tilePane);
 
     }
 
