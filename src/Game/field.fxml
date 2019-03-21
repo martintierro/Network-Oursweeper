@@ -12,6 +12,6 @@
             <Image url="@../Pictures/war.jpg" />
          </image>
       </ImageView>
-      <BorderPane fx:id="borderPane" layoutX="9.0" layoutY="23.0" prefHeight="563.0" prefWidth="672.0" />
+      <BorderPane fx:id="borderPane" layoutX="90.0" layoutY="58.0" prefHeight="520.0" prefWidth="520.0" />
    </children>
 </AnchorPane>
