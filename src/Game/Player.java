@@ -1,7 +1,4 @@
-package Client;
-
-import java.util.ArrayList;
-import java.util.Random;
+package Game;
 
 public class Player extends Model{
     private String name;

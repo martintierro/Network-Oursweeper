@@ -1,4 +1,4 @@
-package Client;
+package Game;
 
 public abstract class View {
 
