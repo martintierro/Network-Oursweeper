@@ -3,6 +3,7 @@ package Network;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -12,6 +13,10 @@ public class ServerController {
     ByteArrayOutputStream BAOS;
     ObjectOutputStream OOS;
     //byte[] data;
+
+    public ServerController() {
+
+    }
 
     public byte[] convertObjectToByte (Object object) {
         try {
