@@ -3,15 +3,15 @@ package Network;
 import java.io.*;
 import java.net.*;
 
-public class UDPClient {
+public class UDPClientObjectConversion implements Serializable{
     public static void main(String args[]) throws Exception {
         BufferedReader inFromUser =
                 new BufferedReader(new InputStreamReader(System.in));
 
         DatagramSocket clientSocket = new DatagramSocket();
 
-        //InetAddress IPAddress = InetAddress.getByName("localhost");
-        InetAddress IPAddress = InetAddress.getByName("192.168.1.102");
+        InetAddress IPAddress = InetAddress.getByName("localhost");
+        //InetAddress IPAddress = InetAddress.getByName("192.168.1.102");
         byte[] sendData = new byte[1024];
         byte[] receiveData = new byte[1024];
 
