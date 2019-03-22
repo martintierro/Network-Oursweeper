@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Game.LoginView">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Pictures/war.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="usernameLabel" layoutX="51.0" layoutY="377.0" text="Username:" textFill="#bbc3a6">
+         <font>
+            <Font name="Chalkduster" size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="ipaddressLabel" layoutX="51.0" layoutY="452.0" text="IP Address:" textFill="#bbc3a6">
+         <font>
+            <Font name="Chalkduster" size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="gameLabel" layoutX="113.0" layoutY="124.0" prefHeight="64.0" prefWidth="374.0" text="Oursweeper" textFill="#bbc3a6">
+         <font>
+            <Font name="Chalkduster" size="59.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usernameTextField" layoutX="280.0" layoutY="377.0" opacity="0.5" prefHeight="49.0" prefWidth="269.0" promptText="username">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font name="Chalkduster" size="23.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="addressTextField" layoutX="280.0" layoutY="452.0" opacity="0.5" prefHeight="49.0" prefWidth="269.0" promptText="ip address">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font name="Chalkduster" size="24.0" />
+         </font>
+      </TextField>
+      <Button fx:id="playButton" layoutX="266.0" layoutY="543.0" mnemonicParsing="false" onAction="#clickPlay" opacity="0.8" text="Play">
+         <font>
+            <Font name="Chalkduster" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
