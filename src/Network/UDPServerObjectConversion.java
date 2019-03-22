@@ -1,14 +1,28 @@
 package Network;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.*;
 
-public class UDPServerObjectConversion {
+public class UDPServerObjectConversion extends Application{
     ByteArrayOutputStream BAOS;
     ObjectOutputStream OOS;
     byte[] data;
+
+    private Stage stage;
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader fxml = new FXMLLoader(getClass().getResource(""));
+        fxml.setController();
+        Parent root = fxml.load();
+        primaryStage.setTitle("Oursweeper");
+    }
 
     public void convertObjectToByte (Object object) {
         try {
