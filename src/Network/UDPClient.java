@@ -41,7 +41,7 @@ public class UDPClient {
         DatagramSocket clientSocket = new DatagramSocket();
 
         //InetAddress IPAddress = InetAddress.getByName("localhost");
-        InetAddress IPAddress = InetAddress.getByName("192.168.1.102");
+        InetAddress IPAddress = InetAddress.getByName("localhost");
         byte[] sendData = new byte[1024];
         byte[] receiveData = new byte[1024];
 
@@ -49,7 +49,7 @@ public class UDPClient {
         sendData = sentence.getBytes();
 
         DatagramPacket sendPacket =
-                new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+                new DatagramPacket(sendData, sendData.length, IPAddress, 4321);
 
         clientSocket.send(sendPacket);
 
