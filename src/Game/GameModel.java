@@ -6,6 +6,7 @@ public class GameModel extends Model{
     private Field field;
     private ArrayList<Player> players;
     private Player currentPlayer;
+    private boolean over;
 
     public GameModel(ArrayList<Player> players){
         field = new Field();
@@ -36,14 +37,11 @@ public class GameModel extends Model{
         this.players = players;
     }
 
-    public boolean checkIfOver(){
-        int numAlive = 0;
-        for(Player player: players)
-            if(player.isAlive())
-                numAlive++;
-        if(numAlive == 1)
-            return true;
-        return false;
+    public boolean isOver() {
+        return over;
     }
 
+    public void setOver(boolean over) {
+        this.over = over;
+    }
 }

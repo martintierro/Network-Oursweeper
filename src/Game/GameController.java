@@ -22,4 +22,14 @@ public class GameController {
         game.notifyViews();
     }
 
+    public void setIfOver(){
+        int numAlive = 0;
+        for(Player player: game.getPlayers())
+            if(player.isAlive())
+                numAlive++;
+        if(numAlive == 1)
+            game.setOver(true);
+        else game.setOver(false);
+    }
+
 }

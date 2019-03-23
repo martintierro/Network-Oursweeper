@@ -17,7 +17,7 @@ public class GameState implements Serializable {
         for(Tile tile:game.getField().getTiles())
             if(tile.isSweep())
                 sweepedTileIndeces.add(game.getField().getTiles().indexOf(tile));
-        over = game.checkIfOver();
+        over = game.isOver();
         for(Player player:game.getPlayers())
             if(player.isAlive())
                 alivePlayers.add(game.getPlayers().indexOf(player));
