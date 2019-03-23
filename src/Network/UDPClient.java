@@ -21,7 +21,7 @@ public class UDPClient {
     public void sendPacket(Integer i) throws Exception{
         byte[] sendData = new byte[1024];
         sendData[0] = i.byteValue();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 9876);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 1234);
         clientSocket.send(sendPacket);
     }
 
@@ -49,7 +49,7 @@ public class UDPClient {
         sendData = sentence.getBytes();
 
         DatagramPacket sendPacket =
-                new DatagramPacket(sendData, sendData.length, IPAddress, 4321);
+                new DatagramPacket(sendData, sendData.length, IPAddress, 1234);
 
         clientSocket.send(sendPacket);
 
