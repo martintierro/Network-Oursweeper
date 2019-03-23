@@ -41,7 +41,7 @@ public class GameView extends View
     @Override
     public void update()
     {
-        if (gameModel.checkIfOver())
+        if (gameModel.isOver())
         {
             for (Tile e: gameModel.getField().getTiles())
             {
