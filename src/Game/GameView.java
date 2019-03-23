@@ -102,8 +102,9 @@ public class GameView extends View
         tilePane = new TilePane();
         tilePane.setVgap(1.0); tilePane.setHgap(1.0);
         for(int i = 0; i < 100; i++){
-
-            tilePane.getChildren().add(createButtonTile(dirt));
+            Button tempButton = createButtonTile(dirt);
+            tempButton.setId(Integer.toString(i));
+            tilePane.getChildren().add(tempButton);
         }
 
         borderPane.setCenter(tilePane);
