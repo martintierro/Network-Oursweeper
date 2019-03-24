@@ -25,6 +25,6 @@ public class LoginView extends View {
 
     public void clickPlay(ActionEvent actionEvent) throws Exception{
         System.out.println("Play Button Clicked!");
-        new GameView(actionEvent, new GameModel(new ArrayList<Player>()));
+        new GameView(actionEvent, new GameModel(new ArrayList<Player>()), new Player("poop"));
     }
 }
