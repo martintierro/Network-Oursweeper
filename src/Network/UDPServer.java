@@ -19,8 +19,8 @@ public class UDPServer {
     private int playerNum;
 
     private ArrayList<InetAddress> IPAddresses;
-    private byte[] objectToData;
-    //private ArrayList<Player> players;
+    private ArrayList<Player> Players;
+    //private byte[] objectToData;
 
     //private ServerController serverController;
 
@@ -28,6 +28,7 @@ public class UDPServer {
         //serverController = new ServerController();
         playerNum = 0;
         IPAddresses = new ArrayList<>();
+        Players = new ArrayList<>();
         try {
             serverSocket = new DatagramSocket(1234);
         } catch (SocketException e) {
@@ -35,8 +36,27 @@ public class UDPServer {
         }
     }
 
+    public void receiveStateConnection() throws Exception {
+        byte[] receiveData = new byte[1024];
+
+        receivePacket =
+                new DatagramPacket(receiveData, receiveData.length);
+        serverSocket.receive(receivePacket);
+        String player = new String(receivePacket.getData());
+
+        IPAddress = receivePacket.getAddress();
+        port = receivePacket.getPort();
+
+
+        if (!IPAddresses.contains(IPAddress)) {
+            IPAddresses.add(IPAddress);
+            Players.add(new Player(player));
+        }
+        //System.out.println("FROM CLIENT: received");
+        System.out.println ("Port: " + port);
+    }
+
     public void receiveState() throws Exception {
-        System.out.println("IN");
         byte[] receiveData = new byte[1024];
 
         receivePacket =
@@ -47,13 +67,10 @@ public class UDPServer {
         IPAddress = receivePacket.getAddress();
         port = receivePacket.getPort();
 
-        IPAddresses.add(IPAddress);
-        //System.out.println("FROM CLIENT: received");
         System.out.println ("Port: " + port);
     }
 
-
-    public void sendPacketString() throws Exception {
+    public void sendPacketConnection() throws Exception {
         byte[] sendData = new byte[1024];
 
         String capitalizedSentence = new String(receivePacket.getData());
@@ -66,12 +83,12 @@ public class UDPServer {
         serverSocket.send(sendPacket);
     }
 
-    public void sendPacket() throws Exception {
+    public void sendPacket(byte[] object) throws Exception {
 
         byte[] sendData = new byte[1024];
 
-        while(true) {
-            sendData = objectToData;
+       // while(true) {
+            sendData = object;
 
             DatagramPacket sendPacket =
                     new DatagramPacket(sendData, sendData.length, IPAddress, port);
@@ -80,7 +97,15 @@ public class UDPServer {
             System.out.println("FROM CLIENT: received");
 
             serverSocket.send(sendPacket);
-        }
+        //}
+    }
+
+    public ArrayList<InetAddress> getIPAddresses() {
+        return IPAddresses;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return Players;
     }
 
     public int getPlayerNum() {
@@ -97,14 +122,20 @@ public class UDPServer {
     public static void main(String args[]) throws Exception
     {
         UDPServer server = new UDPServer();
+        byte[] objectToData;
 
         server.setPlayerNum();
         int counter = server.getPlayerNum();
 
-        while (counter > 0) {
-            server.receiveState();
-            server.sendPacketString();
-            counter--;
+        while (counter > server.getIPAddresses().size()) {
+            server.receiveStateConnection();
+            server.sendPacketConnection();
         }
+
+        ServerController serverController = new ServerController(server.getPlayers());
+        objectToData = serverController.convertObjectToByte(serverController.getGameModel());
+        server.sendPacket(objectToData);
+
+
     }
 }

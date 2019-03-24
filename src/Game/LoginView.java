@@ -57,8 +57,9 @@ public class LoginView extends View {
         byte[] sendData = new byte[1024];
         byte[] receiveData = new byte[1024];
 
-        String sentence = inFromUser.readLine();
-        sendData = sentence.getBytes();
+        //String sentence = inFromUser.readLine();
+        String username = usernameTextField.getText();
+        sendData = username.getBytes();
 
         DatagramPacket sendPacket =
                 new DatagramPacket(sendData, sendData.length, IPAddress, 1234);
@@ -72,7 +73,8 @@ public class LoginView extends View {
 
         String modifiedSentence = new String (receivePacket.getData());
 
-        System.out.println("FROM SERVER: " + modifiedSentence);
+        System.out.println(modifiedSentence + "is connected!");
+        //System.out.println(" is connected!");
         clientSocket.close();
         //new GameView(actionEvent, new GameModel(new ArrayList<Player>()));
     }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Field{
+public class Field implements Serializable{
     private ArrayList<Tile> tiles;
     Random random = new Random();
 

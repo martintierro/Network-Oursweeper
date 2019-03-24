@@ -1,8 +1,9 @@
 package Game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameModel extends Model{
+public class GameModel extends Model implements Serializable {
     private Field field;
     private ArrayList<Player> players;
     private Player currentPlayer;
