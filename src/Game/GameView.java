@@ -118,6 +118,7 @@ public class GameView extends View
     GameView(ActionEvent actionEvent, GameModel gameModel, Player player) throws IOException {
         this.player = player;
         this.gameModel = gameModel;
+        gameModel.attach(this);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Game/field.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
@@ -173,9 +174,12 @@ public class GameView extends View
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                    if (player.getName().equals(gameModel.getCurrentPlayer().getName()))
-                    {
-
+                    if (player.getName().equals(gameModel.getCurrentPlayer().getName()))   {
+                        //FOR SOLO TESTING
+                        GameController gameController = new GameController(gameModel);
+                        gameController.sweepNextTile(Integer.parseInt(button.getId()));
+                        gameModel.setCurrentPlayer(player);
+                        gameController.setIfOver();
                     }
                     }
                 });

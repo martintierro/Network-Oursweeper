@@ -45,6 +45,7 @@ public class LoginView extends View {
 
         //System.out.println ("Player ADDED: " + players.get(0).getName());
         System.out.println("Play Button Clicked!");
+        /*
         client.sendPacket(usernameTextField.getText());
         System.out.println(client.receiveString());
         GameModel gameModel = null;
@@ -54,7 +55,7 @@ public class LoginView extends View {
             if(player.getName().equals(usernameTextField.getText()))
                 yourPlayer = player;
         new GameView(actionEvent,gameModel,yourPlayer);
-
+        */
         /*BufferedReader inFromUser =
                 new BufferedReader(new InputStreamReader(System.in));
 
@@ -84,6 +85,11 @@ public class LoginView extends View {
         System.out.println(modifiedSentence + "is connected!");
         //System.out.println(" is connected!");
         clientSocket.close();*/
-        //new GameView(actionEvent, new GameModel(new ArrayList<Player>()));
+        Player player = new Player(usernameTextField.getText());
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(player);
+        players.add(new Player("Test Player 2"));
+        GameModel gameModel = new GameModel(players);
+        new GameView(actionEvent, gameModel, player);
     }
 }
