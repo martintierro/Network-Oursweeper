@@ -19,14 +19,16 @@ public class UDPClient {
     }
 
     public void sendPacket(Object o) throws Exception{
-
+        byte[] sendData = Blob.toStream(o);
+        DatagramPacket datagramPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 1234 );
+        clientSocket.send(datagramPacket);
     }
 
     public Object receivePacket() throws Exception{
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
-        return null;
+        return Blob.toObject(receivePacket.getData());
     }
 
 
