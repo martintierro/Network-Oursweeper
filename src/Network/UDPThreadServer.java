@@ -109,7 +109,7 @@ public class UDPThreadServer extends Thread{
     }
 
     public void run2(UDPThreadServer server) {
-        ServerController serverController = new ServerController(server.getPlayers());
+        serverController = new ServerController(server.getPlayers());
         Blob blob = new Blob();
         byte[] objectToData = blob.toStream(serverController.getGameModel());
 
