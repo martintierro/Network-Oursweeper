@@ -97,9 +97,15 @@ public class GameView extends View
 
                             tilePane.getChildren().remove(index);
                             tilePane.getChildren().add(index, createButtonTile(dirtHole));
-
-
                         }
+                        else if (e.isBomb())
+                        {
+                            int index = gameModel.getField().getTiles().indexOf(e);
+
+                            tilePane.getChildren().remove(index);
+                            tilePane.getChildren().add(index, createButtonTile(bomb));
+                        }
+
                     }
                 }
             }
