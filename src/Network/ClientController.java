@@ -2,7 +2,6 @@ package Network;
 
 import Game.GameModel;
 import Game.GameState;
-import Network.UDPClient;
 
 public class ClientController implements Runnable{
     private GameModel clientModel;
