@@ -30,6 +30,7 @@ public class GameController {
         if(numAlive == 1)
             game.setOver(true);
         else game.setOver(false);
+        game.notifyViews();
     }
 
 }

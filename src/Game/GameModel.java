@@ -12,6 +12,7 @@ public class GameModel extends Model implements Serializable {
     public GameModel(ArrayList<Player> players){
         field = new Field();
         this.players = players;
+        setCurrentPlayer(players.get(0));
     }
 
     public Field getField() {
