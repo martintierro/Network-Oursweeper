@@ -18,18 +18,14 @@ public class UDPClient {
         }
     }
 
-    public void sendPacket(Integer i) throws Exception{
-        byte[] sendData = new byte[1024];
-        sendData[0] = i.byteValue();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 1234);
-        clientSocket.send(sendPacket);
+    public void sendPacket(Object o) throws Exception{
+
     }
 
-    public GameState receiveState() throws Exception{
+    public Object receivePacket() throws Exception{
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
-        //TODO return game state
         return null;
     }
 

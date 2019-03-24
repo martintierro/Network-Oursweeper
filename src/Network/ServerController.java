@@ -13,9 +13,6 @@ import java.util.ArrayList;
 
 public class ServerController implements Serializable{
 
-    private byte[] data;
-    private ByteArrayOutputStream BAOS;
-    private ObjectOutputStream OOS;
 
     private GameController GController;
     private GameModel GModel;
@@ -27,19 +24,6 @@ public class ServerController implements Serializable{
         this.GController = new GameController(this.GModel);
     }
 
-    public byte[] convertObjectToByte (Object object) {
-        try {
-            BAOS = new ByteArrayOutputStream(6400);
-            OOS = new ObjectOutputStream(BAOS);
-            OOS.writeObject(object);
-            //data = BAOS.toByteArray();
-            return BAOS.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     public GameModel getGameModel() {
         return GModel;
