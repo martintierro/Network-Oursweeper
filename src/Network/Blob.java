@@ -22,9 +22,8 @@ public class Blob {
     //converting bytes to object
     public static Object toObject (byte[] stream) {
         Object o = null;
-
         try (ByteArrayInputStream BAIS = new ByteArrayInputStream(stream);
-             ObjectInputStream OIS = new ObjectInputStream(BAIS);) {
+             ObjectInputStream OIS = new ObjectInputStream(BAIS)) {
             o = OIS.readObject();
         } catch (IOException e) {
             e.printStackTrace();

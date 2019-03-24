@@ -4,13 +4,19 @@ import Network.UDPClient;
 
 public class ClientController {
     private GameModel clientModel;
+    private UDPClient udpClient;
 
-    public ClientController(GameModel clientModel) {
+    public ClientController(GameModel clientModel, UDPClient udpClient) {
         this.clientModel = clientModel;
+        this.udpClient = udpClient;
     }
 
     public void sweepNextTile(int tileIndex){
-
+        try {
+            udpClient.sendPacket(tileIndex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setNextState(GameState nextState){

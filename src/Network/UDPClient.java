@@ -31,6 +31,13 @@ public class UDPClient {
         return Blob.toObject(receivePacket.getData());
     }
 
+    public String receiveString() throws Exception{
+        byte[] receiveData = new byte[1024];
+        DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
+        clientSocket.receive(receivePacket);
+        return new String (receivePacket.getData());
+    }
+
 
     public static void main(String args[]) throws Exception {
         BufferedReader inFromUser =

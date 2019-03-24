@@ -45,9 +45,17 @@ public class LoginView extends View {
 
         //System.out.println ("Player ADDED: " + players.get(0).getName());
         System.out.println("Play Button Clicked!");
+        client.sendPacket(usernameTextField.getText());
+        System.out.println(client.receiveString());
+        GameModel gameModel = null;
+        gameModel = (GameModel) client.receivePacket();
+        Player yourPlayer = null;
+        for(Player player:gameModel.getPlayers())
+            if(player.getName().equals(usernameTextField.getText()))
+                yourPlayer = player;
+        new GameView(actionEvent,gameModel,yourPlayer);
 
-
-        BufferedReader inFromUser =
+        /*BufferedReader inFromUser =
                 new BufferedReader(new InputStreamReader(System.in));
 
         DatagramSocket clientSocket = new DatagramSocket();
@@ -75,7 +83,7 @@ public class LoginView extends View {
 
         System.out.println(modifiedSentence + "is connected!");
         //System.out.println(" is connected!");
-        clientSocket.close();
+        clientSocket.close();*/
         //new GameView(actionEvent, new GameModel(new ArrayList<Player>()));
     }
 }
