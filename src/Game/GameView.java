@@ -85,6 +85,7 @@ public class GameView extends View
                         hasShownGameOver = true;
                     }
                     gameoverLabel.setVisible(true);
+
                 }
                 else
                 {
