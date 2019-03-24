@@ -43,11 +43,12 @@ public class LoginView extends View {
         loginController.setupGame(usernameTextField.getText());
         Thread t1 = new Thread(loginController);
         t1.start();
-        while (t1.isAlive()){
-            if(loginController.getModel()!= null)
-                t1.stop();
+        while (loginController.getModel()==null){
             System.out.println("Connecting");
         }
+        t1.stop();
+        GM = loginController.getModel();
+
         //GM = new GameModel(players);
         //players.add(new Player(usernameTextField.getText()));
         //GM.setPlayers(players);
