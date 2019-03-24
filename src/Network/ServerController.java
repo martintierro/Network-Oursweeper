@@ -32,6 +32,6 @@ public class ServerController implements Serializable{
     public GameState getNextState(int tile) {
         GController.sweepNextTile(tile);
         GController.setIfOver();
-        return GState;
+        return new GameState(GModel);
     }
 }
