@@ -57,7 +57,6 @@ public class GameView extends View
             {
                 if (!gameModel.getCurrentPlayer().isAlive())
                 {
-                    System.out.println("Player is dead");
                     for (Tile e: gameModel.getField().getTiles())
                     {
                         if (e.isSweep())
@@ -90,7 +89,6 @@ public class GameView extends View
                 }
                 else
                 {
-                    System.out.println("Player is alive");
                     for (Tile e: gameModel.getField().getTiles())
                     {
                         if (e.isSweep())
@@ -100,7 +98,7 @@ public class GameView extends View
                             tilePane.getChildren().remove(index);
                             tilePane.getChildren().add(index, createButtonTile(dirtHole));
                         }
-                        else if (e.isBomb())
+                        else if (e.isBomb()&&e.isSweep())
                         {
                             int index = gameModel.getField().getTiles().indexOf(e);
 
