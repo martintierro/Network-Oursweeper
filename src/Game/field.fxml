@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -13,5 +15,20 @@
          </image>
       </ImageView>
       <BorderPane fx:id="borderPane" layoutX="90.0" layoutY="58.0" prefHeight="520.0" prefWidth="520.0" />
+      <Label fx:id="playerLabel" layoutX="22.0" layoutY="640.0" text="Player Name" textFill="WHITE">
+         <font>
+            <Font name="Chalkduster" size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="aliveLabel" layoutX="245.0" layoutY="644.0" prefHeight="30.0" prefWidth="425.0" text="Alive: " textFill="WHITE">
+         <font>
+            <Font name="Chalkduster" size="21.0" />
+         </font>
+      </Label>
+      <Label fx:id="gameoverLabel" layoutX="-1.0" prefHeight="656.0" prefWidth="701.0" text="GAME OVER" textFill="#d00000" visible="false">
+         <font>
+            <Font name="Chalkduster" size="96.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
