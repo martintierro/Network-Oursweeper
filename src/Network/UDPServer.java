@@ -56,18 +56,20 @@ public class UDPServer {
         System.out.println ("Port: " + port);
     }
 
-    public void receiveState() throws Exception {
+    public int receiveState() throws Exception {
         byte[] receiveData = new byte[1024];
 
         receivePacket =
                 new DatagramPacket(receiveData, receiveData.length);
         serverSocket.receive(receivePacket);
-        String sentence = new String(receivePacket.getData());
+        String stringTile = new String(receivePacket.getData());
+        int intTile = Integer.parseInt(stringTile);
 
-        IPAddress = receivePacket.getAddress();
-        port = receivePacket.getPort();
+        return intTile;
+        //IPAddress = receivePacket.getAddress();
+        //port = receivePacket.getPort();
 
-        System.out.println ("Port: " + port);
+        //System.out.println ("Port: " + port);
     }
 
     public void sendPacketConnection() throws Exception {
@@ -83,7 +85,7 @@ public class UDPServer {
         serverSocket.send(sendPacket);
     }
 
-    public void sendPacket(byte[] object) throws Exception {
+    public void sendPacket(byte[] object, InetAddress IPAddress) throws Exception {
 
         byte[] sendData = new byte[1024];
 
@@ -134,8 +136,17 @@ public class UDPServer {
 
         ServerController serverController = new ServerController(server.getPlayers());
         objectToData = serverController.convertObjectToByte(serverController.getGameModel());
-        server.sendPacket(objectToData);
 
+        for (InetAddress IPAddress: server.getIPAddresses()) {
+            server.sendPacket(objectToData, IPAddress);
+        }
+
+        while (!serverController.getGameModel().isOver()) {
+            for (InetAddress IPAddress: server.getIPAddresses()) {
+                objectToData = serverController.convertObjectToByte(serverController.getNextState(server.receiveState()));
+                server.sendPacket(objectToData, IPAddress);
+            }
+        }
 
     }
 }

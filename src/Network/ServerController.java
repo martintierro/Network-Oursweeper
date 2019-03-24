@@ -9,12 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ServerController implements Serializable{
 
@@ -32,10 +27,6 @@ public class ServerController implements Serializable{
         this.GController = new GameController(this.GModel);
     }
 
-    /*public void startGame() {
-
-    }*/
-
     public byte[] convertObjectToByte (Object object) {
         try {
             BAOS = new ByteArrayOutputStream(6400);
@@ -50,28 +41,12 @@ public class ServerController implements Serializable{
         return null;
     }
 
-    public void updateAllClients() {
-
-    }
-
     public GameModel getGameModel() {
         return GModel;
     }
 
-    public GameState getGameState() {
+    public GameState getNextState(int tile) {
+        GController.sweepNextTile(tile);
         return GState;
     }
-
-    public byte[] getNextState() {
-        //GController.sweepNextTile();
-        return data;
-    }
-
-    /*public ArrayList<InetAddress> getIPAddresses() {
-        return IPAddresses;
-    }
-
-    public DatagramSocket getServerSocket() {
-        return serverSocket;
-    }*/
 }
