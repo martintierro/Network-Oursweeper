@@ -5,7 +5,7 @@ import Game.GameState;
 import java.io.*;
 import java.net.*;
 
-public class UDPClient {
+public class UDPClient implements Serializable{
     private DatagramSocket clientSocket;
     private InetAddress serverIPAddress;
 
