@@ -115,8 +115,8 @@ public class UDPThreadServer extends Thread{
 
         new Thread(new Responder2(serverSocket, objectToData, getIPAddresses(), port)).start();
 
-        //while (!serverController.getGameModel().isOver())
-        //    run();
+        while (!serverController.getGameModel().isOver())
+            run();
     }
 
     /*public ServerController getServerController() {
