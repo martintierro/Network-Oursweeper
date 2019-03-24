@@ -96,7 +96,7 @@ public class UDPServer {
                     new DatagramPacket(sendData, sendData.length, IPAddress, port);
 
             //System.out.println("FROM CLIENT: " + sentence);
-            System.out.println("FROM CLIENT: received");
+            //System.out.println("FROM CLIENT: received");
 
             serverSocket.send(sendPacket);
         //}

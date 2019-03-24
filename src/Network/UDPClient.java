@@ -19,7 +19,11 @@ public class UDPClient {
     }
 
     public void sendPacket(Object o) throws Exception{
-        byte[] sendData = Blob.toStream(o);
+        byte[] sendData = new byte[1024];
+        if (o instanceof String)
+            sendData = ((String) o).getBytes();
+        else
+            sendData = Blob.toStream(o);
         DatagramPacket datagramPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 1234 );
         clientSocket.send(datagramPacket);
     }
@@ -35,7 +39,7 @@ public class UDPClient {
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
-        return new String (receivePacket.getData());
+        return new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
     }
 
 
