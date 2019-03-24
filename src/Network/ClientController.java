@@ -1,8 +1,10 @@
-package Game;
+package Network;
 
+import Game.GameModel;
+import Game.GameState;
 import Network.UDPClient;
 
-public class ClientController {
+public class ClientController implements Runnable{
     private GameModel clientModel;
     private UDPClient udpClient;
 
@@ -26,5 +28,16 @@ public class ClientController {
         for(int playerIndex:nextState.getAlivePlayers())
             clientModel.getPlayers().get(playerIndex).setAlive(true);
         clientModel.setCurrentPlayer(nextState.getCurrentPlayer());
+        clientModel.notifyViews();
+    }
+
+    public void run() {
+        while(!clientModel.isOver()){
+            try {
+                setNextState((GameState)udpClient.receivePacket());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
