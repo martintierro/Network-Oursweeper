@@ -13,6 +13,7 @@ public class GameModel extends Model implements Serializable {
         field = new Field();
         this.players = players;
         setCurrentPlayer(players.get(0));
+        over = false;
     }
 
     public Field getField() {
