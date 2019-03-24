@@ -39,12 +39,21 @@ public class LoginView extends View {
 
     public void clickPlay(ActionEvent actionEvent) throws Exception{
         client = new UDPClient(InetAddress.getByName(addressTextField.getText()));
+        LoginController loginController = new LoginController(client);
+        loginController.setupGame(usernameTextField.getText());
+        Thread t1 = new Thread(loginController);
+        t1.start();
+        while (t1.isAlive()){
+            if(loginController.getModel()!= null)
+                t1.stop();
+            System.out.println("Connecting");
+        }
         //GM = new GameModel(players);
         //players.add(new Player(usernameTextField.getText()));
         //GM.setPlayers(players);
 
         //System.out.println ("Player ADDED: " + players.get(0).getName());
-        System.out.println("Play Button Clicked!");
+        /*System.out.println("Play Button Clicked!");
         client.sendPacket(usernameTextField.getText());
         System.out.println(client.receiveString());
         GameModel gameModel = null;
