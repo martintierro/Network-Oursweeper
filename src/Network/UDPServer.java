@@ -123,6 +123,7 @@ public class UDPServer {
 
     public static void main(String args[]) throws Exception
     {
+        Blob blob = new Blob();
         UDPServer server = new UDPServer();
         byte[] objectToData;
 
@@ -135,7 +136,7 @@ public class UDPServer {
         }
 
         ServerController serverController = new ServerController(server.getPlayers());
-        objectToData = serverController.convertObjectToByte(serverController.getGameModel());
+        objectToData = blob.toStream(serverController.getGameModel());
 
         for (InetAddress IPAddress: server.getIPAddresses()) {
             server.sendPacket(objectToData, IPAddress);
@@ -143,7 +144,7 @@ public class UDPServer {
 
         while (!serverController.getGameModel().isOver()) {
             for (InetAddress IPAddress: server.getIPAddresses()) {
-                objectToData = serverController.convertObjectToByte(serverController.getNextState(server.receiveState()));
+                objectToData = blob.toStream(serverController.getNextState(server.receiveState()));
                 server.sendPacket(objectToData, IPAddress);
             }
         }
