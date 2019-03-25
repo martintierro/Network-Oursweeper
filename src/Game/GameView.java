@@ -108,7 +108,7 @@ public class GameView extends View
             }
             if (!player.isAlive())
             {
-                if (!hasShownGameOver)
+                /*if (!hasShownGameOver)
                 {
                     try {
                         TimeUnit.SECONDS.sleep(5);
@@ -116,7 +116,7 @@ public class GameView extends View
                         e.printStackTrace();
                     }
 
-                }
+                }*/
 
                 hasShownGameOver = true;
                 gameoverLabel.setVisible(true);
