@@ -83,21 +83,7 @@ public class GameView extends View
                                 }
                             }
                         }
-                        if (!player.isAlive())
-                        {
-                            if (!hasShownGameOver)
-                            {
-                                try {
-                                    TimeUnit.SECONDS.sleep(5);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
 
-                            }
-
-                            hasShownGameOver = true;
-                            gameoverLabel.setVisible(true);
-                        }
 
 
                     }
@@ -119,6 +105,21 @@ public class GameView extends View
                         }
                     }
                 }
+            }
+            if (!player.isAlive())
+            {
+                if (!hasShownGameOver)
+                {
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                hasShownGameOver = true;
+                gameoverLabel.setVisible(true);
             }
             if (currentPlayerAlive && numOfPlayers == 1) {
                 winnerLabel.setVisible(true);
