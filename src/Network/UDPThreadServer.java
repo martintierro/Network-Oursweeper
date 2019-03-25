@@ -96,6 +96,7 @@ public class UDPThreadServer extends Thread{
         byte[] receiveData = new byte[1024];
 
         while (serverController.getGameModel().isOver()) {
+            System.out.println("Tile Received");
             receivePacket =
                     new DatagramPacket(receiveData, receiveData.length);
             try {

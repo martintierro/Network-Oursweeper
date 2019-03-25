@@ -2,6 +2,7 @@ package Network;
 
 import Game.GameModel;
 import Game.GameState;
+import Game.Tile;
 
 import java.io.Serializable;
 
@@ -16,7 +17,8 @@ public class ClientController implements Runnable, Serializable {
 
     public void sweepNextTile(int tileIndex){
         try {
-            udpClient.sendPacket(tileIndex);
+            Tile tile = clientModel.getField().getTile(tileIndex);
+            udpClient.sendPacket(tile);
         } catch (Exception e) {
             e.printStackTrace();
         }

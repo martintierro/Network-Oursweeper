@@ -8,6 +8,7 @@ import java.net.*;
 public class UDPClient implements Serializable{
     private DatagramSocket clientSocket;
     private InetAddress serverIPAddress;
+    private int serverPort;
 
     public UDPClient(InetAddress serverIPAddress) {
         this.serverIPAddress = serverIPAddress;
@@ -16,6 +17,7 @@ public class UDPClient implements Serializable{
         } catch (SocketException e) {
             e.printStackTrace();
         }
+        serverPort  = 1234;
     }
 
     public void sendPacket(Object o) throws Exception{
@@ -24,8 +26,9 @@ public class UDPClient implements Serializable{
             sendData = ((String) o).getBytes();
         else
             sendData = Blob.toStream(o);
-        DatagramPacket datagramPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 1234 );
+        DatagramPacket datagramPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, serverPort );
         clientSocket.send(datagramPacket);
+        System.out.println("Sent Packet");
     }
 
     public Object receivePacket() throws Exception{
@@ -41,6 +44,7 @@ public class UDPClient implements Serializable{
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
+        serverPort =  receivePacket.getPort();
         return new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
     }
 
