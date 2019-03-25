@@ -17,7 +17,7 @@ public class ClientController implements Runnable, Serializable {
 
     public void sweepNextTile(Integer tileIndex){
         try {
-            udpClient.sendPacket(tileIndex);
+            udpClient.sendPacket(tileIndex.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
