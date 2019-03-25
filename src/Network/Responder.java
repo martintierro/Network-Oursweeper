@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Responder implements Runnable, Serializable {
     private DatagramSocket socket;
@@ -12,9 +13,9 @@ public class Responder implements Runnable, Serializable {
     private int sweptTile;
     private byte[] data;
     private Blob blob;
-    private int port;
+    private HashMap<InetAddress, Integer> port;
 
-    public Responder(DatagramSocket socket, ServerController serverController, ArrayList<InetAddress> IPAddresses, int sweptTile, int port) {
+    public Responder(DatagramSocket socket, ServerController serverController, ArrayList<InetAddress> IPAddresses, int sweptTile, HashMap<InetAddress, Integer> port) {
         this.socket = socket;
         this.serverController = serverController;
         this.IPAddresses = IPAddresses;
@@ -32,7 +33,7 @@ public class Responder implements Runnable, Serializable {
             sendData = data;
 
             DatagramPacket sendPacket =
-                    new DatagramPacket(sendData, sendData.length, IPAddress, port);
+                    new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
             try {
                 socket.send(sendPacket);
             } catch (IOException e) {

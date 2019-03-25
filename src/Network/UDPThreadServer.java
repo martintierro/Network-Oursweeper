@@ -10,18 +10,20 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UDPThreadServer extends Thread{
     private InetAddress IPAddress;
     private DatagramSocket serverSocket;
     private DatagramPacket receivePacket;
-    private int port;
+    //private int port;
     private int playerNum;
     private int intTile;
 
     private ArrayList<InetAddress> IPAddresses;
     private ArrayList<Player> Players;
+    private HashMap<InetAddress, Integer> port;
     //private byte[] objectToData;
 
     public ServerController serverController;
@@ -47,7 +49,7 @@ public class UDPThreadServer extends Thread{
         String player = new String(receivePacket.getData()).trim();
 
         IPAddress = receivePacket.getAddress();
-        port = receivePacket.getPort();
+        port.put(IPAddress, receivePacket.getPort());
 
 
         if (!IPAddresses.contains(IPAddress)) {
@@ -55,7 +57,6 @@ public class UDPThreadServer extends Thread{
             Players.add(new Player(player));
         }
         System.out.println("FROM CLIENT: received");
-        System.out.println ("Port: " + port);
     }
 
     public void sendPacketConnection() throws Exception {
@@ -65,7 +66,7 @@ public class UDPThreadServer extends Thread{
         sendData = capitalizedSentence.getBytes();
 
         DatagramPacket sendPacket =
-                new DatagramPacket(sendData, sendData.length, IPAddress, port);
+                new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
 
         //System.out.println("FROM CLIENT: received");
         serverSocket.send(sendPacket);
@@ -94,9 +95,9 @@ public class UDPThreadServer extends Thread{
         //ServerController serverController = new ServerController(getPlayers());
         byte[] receiveData = new byte[1024];
 
-        System.out.println (getServerController().getGameModel().getCurrentPlayer().getName());
+        System.out.println (serverController.getGameModel().getCurrentPlayer().getName());
 
-        while (!getServerController().getGameModel().isOver()) {
+        while (serverController.getGameModel().isOver()) {
             System.out.println("IN");
             receivePacket =
                     new DatagramPacket(receiveData, receiveData.length);
@@ -107,7 +108,6 @@ public class UDPThreadServer extends Thread{
             }
             String stringTile = new String(receivePacket.getData());
             intTile = Integer.parseInt(stringTile);
-            port = receivePacket.getPort();
 
             new Thread(new Responder(serverSocket, serverController, getIPAddresses(), intTile, port)).start();
         }
@@ -118,8 +118,6 @@ public class UDPThreadServer extends Thread{
         Blob blob = new Blob();
         byte[] objectToData = blob.toStream(serverController.getGameModel());
         GameModel gm = (GameModel) blob.toObject(objectToData);
-
-        System.out.println("NAME: " + gm.getCurrentPlayer().getName());
 
         new Thread(new Responder2(serverSocket, objectToData, getIPAddresses(), port)).start();
         setServerController(serverController);
