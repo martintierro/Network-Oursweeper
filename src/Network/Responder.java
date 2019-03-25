@@ -1,5 +1,7 @@
 package Network;
 
+import Game.Tile;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.*;
@@ -10,12 +12,12 @@ public class Responder implements Runnable, Serializable {
     private DatagramSocket socket;
     private ServerController serverController;
     private ArrayList<InetAddress> IPAddresses;
-    private int sweptTile;
+    private Tile sweptTile;
     private byte[] data;
     private Blob blob;
     private HashMap<InetAddress, Integer> port;
 
-    public Responder(DatagramSocket socket, ServerController serverController, ArrayList<InetAddress> IPAddresses, int sweptTile, HashMap<InetAddress, Integer> port) {
+    public Responder(DatagramSocket socket, ServerController serverController, ArrayList<InetAddress> IPAddresses, Tile sweptTile, HashMap<InetAddress, Integer> port) {
         this.socket = socket;
         this.serverController = serverController;
         this.IPAddresses = IPAddresses;
@@ -26,7 +28,7 @@ public class Responder implements Runnable, Serializable {
     }
 
     public void run() {
-        data = blob.toStream(serverController.getNextState(sweptTile));
+        data = blob.toStream(serverController.getNextState(serverController.getGameModel().getField().getTiles().indexOf(sweptTile)));
 
         for (InetAddress IPAddress: IPAddresses) {
             byte[] sendData = new byte[1024];

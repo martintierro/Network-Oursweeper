@@ -2,6 +2,7 @@ package Network;
 
 import Game.GameModel;
 import Game.Player;
+import Game.Tile;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -19,7 +20,7 @@ public class UDPThreadServer extends Thread{
     private DatagramPacket receivePacket;
     //private int port;
     private int playerNum;
-    private int intTile;
+    private Tile tile;
 
     private ArrayList<InetAddress> IPAddresses;
     private ArrayList<Player> Players;
@@ -39,6 +40,7 @@ public class UDPThreadServer extends Thread{
             e.printStackTrace();
         }
         port = new HashMap<>();
+        tile = null;
     }
 
     public void receiveStateConnection() throws Exception {
@@ -104,11 +106,10 @@ public class UDPThreadServer extends Thread{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String stringTile = new String(receivePacket.getData());
-            intTile = Integer.parseInt(stringTile);
+            tile = (Tile)Blob.toObject(receivePacket.getData());
             System.out.println("Tile Clicked");
 
-            new Thread(new Responder(serverSocket, serverController, getIPAddresses(), intTile, port)).start();
+            new Thread(new Responder(serverSocket, serverController, getIPAddresses(), tile, port)).start();
         }
     }
 
