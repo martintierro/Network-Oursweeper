@@ -38,6 +38,7 @@ public class UDPThreadServer extends Thread{
         } catch (SocketException e) {
             e.printStackTrace();
         }
+        port = new HashMap<>();
     }
 
     public void receiveStateConnection() throws Exception {
