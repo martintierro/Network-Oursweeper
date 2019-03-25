@@ -15,10 +15,9 @@ public class ClientController implements Runnable, Serializable {
         this.udpClient = udpClient;
     }
 
-    public void sweepNextTile(int tileIndex){
+    public void sweepNextTile(Integer tileIndex){
         try {
-            Tile tile = clientModel.getField().getTile(tileIndex);
-            udpClient.sendPacket(tile);
+            udpClient.sendPacket(tileIndex);
         } catch (Exception e) {
             e.printStackTrace();
         }
