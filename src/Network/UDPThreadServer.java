@@ -105,6 +105,7 @@ public class UDPThreadServer extends Thread{
             }
             String stringTile = new String(receivePacket.getData());
             intTile = Integer.parseInt(stringTile);
+            System.out.println("Tile Clicked");
 
             new Thread(new Responder(serverSocket, serverController, getIPAddresses(), intTile, port)).start();
         }
