@@ -83,17 +83,25 @@ public class GameView extends View
                                 }
                             }
                         }
-                        if (!hasShownGameOver) {
-                            try {
-                                TimeUnit.SECONDS.sleep(5);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            hasShownGameOver = true;
-                        }
-                        gameoverLabel.setVisible(true);
+                        if (!player.isAlive())
+                        {
+                            if (!hasShownGameOver)
+                            {
+                                try {
+                                    TimeUnit.SECONDS.sleep(5);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
 
-                    } else {
+                            }
+
+                            hasShownGameOver = true;
+                            gameoverLabel.setVisible(true);
+                        }
+
+
+                    }
+                    else {
                         for (int i = 0; i < gameModel.getField().getTiles().size(); i++) {
                             if (gameModel.getField().getTile(i).isSweep()) {
                                 if (gameModel.getField().getTile(i).isBomb()) {
