@@ -76,11 +76,13 @@ public class GameView extends View
                                     Background background = new Background(backgroundImage);
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
+                                    button.setDisable(true);
                                 } else {
                                     BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
                                     Background background = new Background(backgroundImage);
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
+                                    button.setDisable(true);
                                 }
                             }
                         }
@@ -96,11 +98,13 @@ public class GameView extends View
                                     Background background = new Background(backgroundImage);
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
+                                    button.setDisable(true);
                                 } else {
                                     BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
                                     Background background = new Background(backgroundImage);
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
+                                    button.setDisable(true);
                                 }
                             }
                         }
