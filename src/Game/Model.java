@@ -1,8 +1,9 @@
 package Game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Model {
+public abstract class Model implements Serializable {
 
     private ArrayList<View> views;
 

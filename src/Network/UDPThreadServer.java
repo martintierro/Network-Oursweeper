@@ -1,5 +1,6 @@
 package Network;
 
+import Game.GameModel;
 import Game.Player;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class UDPThreadServer extends Thread{
         receivePacket =
                 new DatagramPacket(receiveData, receiveData.length);
         serverSocket.receive(receivePacket);
-        String player = new String(receivePacket.getData());
+        String player = new String(receivePacket.getData()).trim();
 
         IPAddress = receivePacket.getAddress();
         port = receivePacket.getPort();
@@ -116,6 +117,9 @@ public class UDPThreadServer extends Thread{
         serverController = new ServerController(server.getPlayers());
         Blob blob = new Blob();
         byte[] objectToData = blob.toStream(serverController.getGameModel());
+        GameModel gm = (GameModel) blob.toObject(objectToData);
+
+        System.out.println("NAME: " + gm.getCurrentPlayer().getName());
 
         new Thread(new Responder2(serverSocket, objectToData, getIPAddresses(), port)).start();
         setServerController(serverController);

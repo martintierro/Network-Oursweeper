@@ -14,6 +14,7 @@ public class Blob implements Serializable{
             ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
             ObjectOutputStream OOS = new ObjectOutputStream(BAOS);) {
             OOS.writeObject(o);
+            stream = BAOS.toByteArray();
             OOS.close();
         } catch (IOException e) {
             e.printStackTrace();

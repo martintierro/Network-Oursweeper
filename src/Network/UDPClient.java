@@ -31,7 +31,7 @@ public class UDPClient implements Serializable{
     public Object receivePacket() throws Exception{
         System.out.println("in receive packet");
 
-        byte[] receiveData = new byte[1024];
+        byte[] receiveData = new byte[1048576];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
         return Blob.toObject(receivePacket.getData());

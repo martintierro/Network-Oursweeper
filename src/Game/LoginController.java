@@ -2,7 +2,7 @@ package Game;
 
 import Network.UDPClient;
 
-public class LoginController implements Runnable {
+public class LoginController {
     private UDPClient udpClient;
     private GameModel model;
 
@@ -14,6 +14,7 @@ public class LoginController implements Runnable {
         try {
             udpClient.sendPacket(username);
             System.out.println("Connected: " + udpClient.receiveString());
+            model = (GameModel)udpClient.receivePacket();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -21,14 +22,5 @@ public class LoginController implements Runnable {
 
     public GameModel getModel() {
         return model;
-    }
-
-    @Override
-    public void run() {
-        try {
-            model = (GameModel)udpClient.receivePacket();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

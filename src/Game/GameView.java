@@ -1,5 +1,6 @@
 package Game;
 
+import Network.ClientController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,6 +38,7 @@ public class GameView extends View
     private Image dirtHole = new Image("/Pictures/dirt hole.png", 50, 50, false, false);
 
     private GameModel gameModel;
+    private ClientController clientController;
 
     private TilePane tilePane;
 
@@ -127,9 +129,11 @@ public class GameView extends View
     }
 
 
-    GameView(ActionEvent actionEvent, GameModel gameModel, Player player) throws IOException {
+    GameView(ActionEvent actionEvent, GameModel gameModel, Player player, ClientController clientController) throws IOException {
         this.player = player;
         this.gameModel = gameModel;
+        this.clientController = clientController;
+        new Thread(clientController).start();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Game/field.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
@@ -185,9 +189,8 @@ public class GameView extends View
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                    if (player.getName().equals(gameModel.getCurrentPlayer().getName()))
-                    {
-
+                    if (player.getName().equals(gameModel.getCurrentPlayer().getName())) {
+                        clientController.sweepNextTile(Integer.parseInt(button.getId()));
                     }
                     }
                 });

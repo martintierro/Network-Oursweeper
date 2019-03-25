@@ -22,20 +22,20 @@ public class ClientController implements Runnable, Serializable {
         }
     }
 
-    public void setNextState(GameModel nextState){
-        /*clientModel.setOver(nextState.isOver());
+    public void setNextState(GameState nextState){
+        clientModel.setOver(nextState.isOver());
         for(int tileIndex:nextState.getSweepedTileIndeces())
             clientModel.getField().getTiles().get(tileIndex).setSweep(true);
         for(int playerIndex:nextState.getAlivePlayers())
             clientModel.getPlayers().get(playerIndex).setAlive(true);
         clientModel.setCurrentPlayer(nextState.getCurrentPlayer());
-        clientModel.notifyViews();*/
+        clientModel.notifyViews();
     }
 
     public void run() {
         while(!clientModel.isOver()){
             try {
-                setNextState((GameModel) udpClient.receivePacket());
+                setNextState((GameState) udpClient.receivePacket());
                 System.out.println("RUN");
             } catch (Exception e) {
                 e.printStackTrace();
