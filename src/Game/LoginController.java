@@ -17,9 +17,9 @@ public class LoginController {
             udpClient.sendPacket(username);
             System.out.println("Connected: " + udpClient.receiveString());
             model = (GameModel)udpClient.receivePacket();
-        }catch (SocketTimeoutException s){
+        /*}catch (SocketTimeoutException s){
             System.out.println("Socket has timed out");
-            s.printStackTrace();
+            s.printStackTrace();*/
         }
         catch (Exception e) {
             e.printStackTrace();
