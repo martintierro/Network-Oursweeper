@@ -69,21 +69,23 @@ public class GameView extends View
                 if (!gameModel.getCurrentPlayer().isAlive())
                 {
                     currentPlayerAlive = false;
-                    for (Tile e: gameModel.getField().getTiles())
+                    for (int i =0; i<gameModel.getField().getTiles().size(); i++)
                     {
-                        if (e.isSweep())
+                        if (gameModel.getField().getTile(i).isSweep())
                         {
-                            int index = gameModel.getField().getTiles().indexOf(e);
-
-                            if (e.isBomb())
+                            if (gameModel.getField().getTile(i).isBomb())
                             {
-                                tilePane.getChildren().remove(index);
-                                tilePane.getChildren().add(index, createButtonTile(bomb));
+                                BackgroundImage backgroundImage = new BackgroundImage(bomb, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                Background background = new Background(backgroundImage);
+                                Button button = (Button) tilePane.getChildren().get(i);
+                                button.setBackground(background);
                             }
                             else
                             {
-                                tilePane.getChildren().remove(index);
-                                tilePane.getChildren().add(index, createButtonTile(dirtHole));
+                                BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                Background background = new Background(backgroundImage);
+                                Button button = (Button) tilePane.getChildren().get(i);
+                                button.setBackground(background);
                             }
                         }
                     }
@@ -101,23 +103,25 @@ public class GameView extends View
                 }
                 else
                 {
-                    for (Tile e: gameModel.getField().getTiles())
+                    for (int i =0; i<gameModel.getField().getTiles().size(); i++)
                     {
-                        if (e.isSweep())
+                        if (gameModel.getField().getTile(i).isSweep())
                         {
-                            int index = gameModel.getField().getTiles().indexOf(e);
-
-                            tilePane.getChildren().remove(index);
-                            tilePane.getChildren().add(index, createButtonTile(dirtHole));
+                            if (gameModel.getField().getTile(i).isBomb())
+                            {
+                                BackgroundImage backgroundImage = new BackgroundImage(bomb, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                Background background = new Background(backgroundImage);
+                                Button button = (Button) tilePane.getChildren().get(i);
+                                button.setBackground(background);
+                            }
+                            else
+                            {
+                                BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                Background background = new Background(backgroundImage);
+                                Button button = (Button) tilePane.getChildren().get(i);
+                                button.setBackground(background);
+                            }
                         }
-                        else if (e.isBomb()&&e.isSweep())
-                        {
-                            int index = gameModel.getField().getTiles().indexOf(e);
-
-                            tilePane.getChildren().remove(index);
-                            tilePane.getChildren().add(index, createButtonTile(bomb));
-                        }
-                    }
                 }
             }
         }
