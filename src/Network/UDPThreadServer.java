@@ -56,15 +56,10 @@ public class UDPThreadServer extends Thread{
         IPAddress = receivePacket.getAddress();
         port.put(IPAddress, receivePacket.getPort());
 
-        for(Player p: Players) {
-            if (!p.getName().equals(player)) {
-                if (!IPAddresses.contains(IPAddress)) {
-                    IPAddresses.add(IPAddress);
-                    Players.add(new Player(player));
-                }
-            }
+        if (!IPAddresses.contains(IPAddress)) {
+            IPAddresses.add(IPAddress);
+            Players.add(new Player(player));
         }
-
         System.out.println("FROM CLIENT: received");
     }
 
