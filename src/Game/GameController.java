@@ -12,11 +12,12 @@ public class GameController {
         tile.setSweep(true);
         if(tile.isBomb())
             game.getCurrentPlayer().setAlive(false);
-        int nextPlayerIndex = (game.getPlayers().indexOf(game.getCurrentPlayer())+1);
-        if(nextPlayerIndex>=game.getPlayers().size())
-            nextPlayerIndex = 0;
-        while(!game.getPlayers().get(nextPlayerIndex).isAlive())
-           nextPlayerIndex++;
+
+        int currPlayerIndex = (game.getPlayers().indexOf(game.getCurrentPlayer()));
+        if(currPlayerIndex+1>=game.getPlayers().size())
+            currPlayerIndex = 0;
+        while(!game.getPlayers().get(currPlayerIndex).isAlive())
+           currPlayerIndex++;
         Player nextPlayer = game.getPlayers().get(nextPlayerIndex);
         game.setCurrentPlayer(nextPlayer);
         game.notifyViews();
