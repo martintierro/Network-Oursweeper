@@ -50,7 +50,6 @@ public class GameView extends View
     @Override
     public void update()
     {
-
         Platform.runLater( () -> {
             System.out.println("Current Player: " + gameModel.getCurrentPlayer().getName());
             currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
@@ -131,6 +130,8 @@ public class GameView extends View
                 winnerLabel.setVisible(true);
             }
         });
+
+
     }
 
 
