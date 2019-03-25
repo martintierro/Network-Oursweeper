@@ -3,7 +3,9 @@ package Network;
 import Game.GameModel;
 import Game.GameState;
 
-public class ClientController implements Runnable{
+import java.io.Serializable;
+
+public class ClientController implements Runnable, Serializable {
     private GameModel clientModel;
     private UDPClient udpClient;
 
@@ -20,20 +22,21 @@ public class ClientController implements Runnable{
         }
     }
 
-    public void setNextState(GameState nextState){
-        clientModel.setOver(nextState.isOver());
+    public void setNextState(GameModel nextState){
+        /*clientModel.setOver(nextState.isOver());
         for(int tileIndex:nextState.getSweepedTileIndeces())
             clientModel.getField().getTiles().get(tileIndex).setSweep(true);
         for(int playerIndex:nextState.getAlivePlayers())
             clientModel.getPlayers().get(playerIndex).setAlive(true);
         clientModel.setCurrentPlayer(nextState.getCurrentPlayer());
-        clientModel.notifyViews();
+        clientModel.notifyViews();*/
     }
 
     public void run() {
         while(!clientModel.isOver()){
             try {
-                setNextState((GameState)udpClient.receivePacket());
+                setNextState((GameModel) udpClient.receivePacket());
+                System.out.println("RUN");
             } catch (Exception e) {
                 e.printStackTrace();
             }

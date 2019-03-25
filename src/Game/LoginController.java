@@ -13,7 +13,7 @@ public class LoginController implements Runnable {
     public void setupGame(String username){
         try {
             udpClient.sendPacket(username);
-            System.out.println(udpClient.receiveString());
+            System.out.println("Connected: " + udpClient.receiveString());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,13 +9,14 @@ import javafx.scene.control.TextField;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
 
-public class LoginView extends View {
+public class LoginView extends View implements Serializable {
     @FXML
     Label usernameLabel, passwordLabel, gameLabel;
     @FXML

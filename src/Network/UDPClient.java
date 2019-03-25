@@ -29,6 +29,8 @@ public class UDPClient implements Serializable{
     }
 
     public Object receivePacket() throws Exception{
+        System.out.println("in receive packet");
+
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
@@ -41,7 +43,6 @@ public class UDPClient implements Serializable{
         clientSocket.receive(receivePacket);
         return new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
     }
-
 
     public static void main(String args[]) throws Exception {
         BufferedReader inFromUser =

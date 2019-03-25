@@ -1,5 +1,7 @@
 package Network;
 
+import Game.GameModel;
+
 import java.io.*;
 
 public class Blob implements Serializable{
@@ -12,7 +14,7 @@ public class Blob implements Serializable{
             ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
             ObjectOutputStream OOS = new ObjectOutputStream(BAOS);) {
             OOS.writeObject(o);
-            stream = BAOS.toByteArray();
+            OOS.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,6 +29,11 @@ public class Blob implements Serializable{
             ByteArrayInputStream BAIS = new ByteArrayInputStream(stream);
             ObjectInputStream OIS = new ObjectInputStream(BAIS)) {
             o = OIS.readObject();
+
+            if (o instanceof GameModel) {
+                System.out.println(((GameModel) o). getCurrentPlayer().getName());
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

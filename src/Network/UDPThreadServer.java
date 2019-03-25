@@ -7,6 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class UDPThreadServer extends Thread{
     private ArrayList<Player> Players;
     //private byte[] objectToData;
 
-    private ServerController serverController;
+    public ServerController serverController;
 
     public UDPThreadServer() {
         serverController = null;
@@ -92,7 +93,10 @@ public class UDPThreadServer extends Thread{
         //ServerController serverController = new ServerController(getPlayers());
         byte[] receiveData = new byte[1024];
 
-        while (!serverController.getGameModel().isOver()) {
+        System.out.println (getServerController().getGameModel().getCurrentPlayer().getName());
+
+        while (!getServerController().getGameModel().isOver()) {
+            System.out.println("IN");
             receivePacket =
                     new DatagramPacket(receiveData, receiveData.length);
             try {
@@ -114,18 +118,23 @@ public class UDPThreadServer extends Thread{
         byte[] objectToData = blob.toStream(serverController.getGameModel());
 
         new Thread(new Responder2(serverSocket, objectToData, getIPAddresses(), port)).start();
+        setServerController(serverController);
 
-        while (!serverController.getGameModel().isOver())
-            run();
+        System.out.println (Thread.currentThread().getState());
+        /*if (Thread.currentThread().getState() == State.RUNNABLE)
+            Thread.currentThread().stop();*/
+
+        /*while (!serverController.getGameModel().isOver())
+            start();*/
     }
 
-    /*public ServerController getServerController() {
+    public ServerController getServerController() {
         return serverController;
     }
 
     public void setServerController (ServerController serverController) {
         this.serverController = serverController;
-    }*/
+    }
 
 
     public static void main(String args[]) throws Exception
@@ -143,6 +152,10 @@ public class UDPThreadServer extends Thread{
         }
 
         server.run2(server);
+        server.stop();
+
+        while (!server.getServerController().getGameModel().isOver())
+            server.run();
 
         /*while (!serverController.getGameModel().isOver()) {
             for (InetAddress IPAddress: server.getIPAddresses()) {

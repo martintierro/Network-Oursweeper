@@ -1,10 +1,11 @@
 package Network;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.*;
 import java.util.ArrayList;
 
-public class Responder implements Runnable{
+public class Responder implements Runnable, Serializable {
     private DatagramSocket socket;
     private ServerController serverController;
     private ArrayList<InetAddress> IPAddresses;
