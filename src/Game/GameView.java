@@ -28,6 +28,7 @@ public class GameView extends View
     private @FXML AnchorPane anchorPane;
     private @FXML BorderPane borderPane;
     private @FXML Label playerLabel;
+    private @FXML Label winnerLabel;
     private boolean hasShownGameOver;
 
 
@@ -46,17 +47,25 @@ public class GameView extends View
     @Override
     public void update()
     {
+        winnerLabel.setVisible(false);
+        int numOfPlayers = 0;
+        boolean currentPlayerAlive = true;
         hasShownGameOver = false;
         String aliveTemp = "Alive: ";
         for (Player player: gameModel.getPlayers())
         {
             if (player.isAlive())
+            {
                 aliveTemp = aliveTemp + "  "+ player.getName();
+                numOfPlayers++;
+            }
+
 
             if (player.getName().equals(this.player.getName()))
             {
                 if (!gameModel.getCurrentPlayer().isAlive())
                 {
+                    currentPlayerAlive = false;
                     for (Tile e: gameModel.getField().getTiles())
                     {
                         if (e.isSweep())
@@ -110,7 +119,10 @@ public class GameView extends View
             }
         }
 
-
+        if (currentPlayerAlive&&numOfPlayers==1)
+        {
+            winnerLabel.setVisible(true);
+        }
 
     }
 
