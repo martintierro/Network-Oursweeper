@@ -39,22 +39,55 @@ public class LoginView extends View implements Serializable {
 
     }
 
-    public void clickPlay(ActionEvent actionEvent) throws Exception{
-        client = new UDPClient(InetAddress.getByName(addressTextField.getText()));
-        LoginController loginController = new LoginController(client);
-        loginController.setupGame(usernameTextField.getText());
-        String name = usernameTextField.getText();
-        GM = loginController.getModel();
-        Player yourPlayer = null;
-        for(Player player:GM.getPlayers()) {
-            //System.out.println("Name1: " + player.getName() + "tt");
-            if (player.getName().compareTo(name)== 0) {
-                System.out.println("Name2: " + player.getName());
-                yourPlayer = player;
+    public boolean validIP (String ip) {
+        try {
+            if ( ip == null || ip.isEmpty() ) {
+                return false;
             }
-        }
-        ClientController clientController = new ClientController(GM,client);
-        new GameView(actionEvent,GM, yourPlayer,clientController);
 
+            String[] parts = ip.split( "\\." );
+            if ( parts.length != 4 ) {
+                return false;
+            }
+
+            for ( String s : parts ) {
+                int i = Integer.parseInt( s );
+                if ( (i < 0) || (i > 255) ) {
+                    return false;
+                }
+            }
+            if ( ip.endsWith(".") ) {
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+    public void clickPlay(ActionEvent actionEvent) throws Exception{
+        if (validIP(addressTextField.getText()) || addressTextField.getText().equals("localhost")) {
+            client = new UDPClient(InetAddress.getByName(addressTextField.getText()));
+            LoginController loginController = new LoginController(client);
+            loginController.setupGame(usernameTextField.getText());
+            String name = usernameTextField.getText();
+            GM = loginController.getModel();
+            Player yourPlayer = null;
+            for(Player player:GM.getPlayers()) {
+                //System.out.println("Name1: " + player.getName() + "tt");
+                if (player.getName().compareTo(name)== 0) {
+                    System.out.println("Name2: " + player.getName());
+                    yourPlayer = player;
+                }
+            }
+            ClientController clientController = new ClientController(GM,client);
+            new GameView(actionEvent,GM, yourPlayer,clientController);
+        }
+        else {
+            System.out.println("Invalid IPAddress");
+            addressTextField.setText("");
+            addressTextField.setPromptText("Invalid IPAddress");
+        }
     }
 }

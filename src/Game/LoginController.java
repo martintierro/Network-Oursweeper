@@ -2,6 +2,8 @@ package Game;
 
 import Network.UDPClient;
 
+import java.net.SocketTimeoutException;
+
 public class LoginController {
     private UDPClient udpClient;
     private GameModel model;
@@ -10,12 +12,16 @@ public class LoginController {
         this.udpClient = udpClient;
     }
 
-    public void setupGame(String username){
+    public void setupGame(String username)  {
         try {
             udpClient.sendPacket(username);
             System.out.println("Connected: " + udpClient.receiveString());
             model = (GameModel)udpClient.receivePacket();
-        } catch (Exception e) {
+        }catch (SocketTimeoutException s){
+            System.out.println("Socket has timed out");
+            s.printStackTrace();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
