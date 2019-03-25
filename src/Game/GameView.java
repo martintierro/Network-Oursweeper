@@ -1,6 +1,7 @@
 package Game;
 
 import Network.ClientController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -49,87 +50,73 @@ public class GameView extends View
     @Override
     public void update()
     {
-        currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
-        winnerLabel.setVisible(false);
-        int numOfPlayers = 0;
-        boolean currentPlayerAlive = true;
-        hasShownGameOver = false;
-        String aliveTemp = "Alive: ";
-        for (Player player: gameModel.getPlayers())
-        {
-            if (player.isAlive())
-            {
-                aliveTemp = aliveTemp + "  "+ player.getName();
-                numOfPlayers++;
-            }
+        Platform.runLater( () -> {
+            System.out.println("Current Player: " + gameModel.getCurrentPlayer().getName());
+            currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
+            winnerLabel.setVisible(false);
+            int numOfPlayers = 0;
+            boolean currentPlayerAlive = true;
+            hasShownGameOver = false;
+            String aliveTemp = "Alive: ";
+            for (Player player : gameModel.getPlayers()) {
+                if (player.isAlive()) {
+                    aliveTemp = aliveTemp + "  " + player.getName();
+                    numOfPlayers++;
+                }
 
 
-            if (player.getName().equals(this.player.getName()))
-            {
-                if (!gameModel.getCurrentPlayer().isAlive())
-                {
-                    currentPlayerAlive = false;
-                    for (int i =0; i<gameModel.getField().getTiles().size(); i++)
-                    {
-                        if (gameModel.getField().getTile(i).isSweep())
-                        {
-                            if (gameModel.getField().getTile(i).isBomb())
-                            {
-                                BackgroundImage backgroundImage = new BackgroundImage(bomb, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-                                Background background = new Background(backgroundImage);
-                                Button button = (Button) tilePane.getChildren().get(i);
-                                button.setBackground(background);
+                if (player.getName().equals(this.player.getName())) {
+                    if (!gameModel.getCurrentPlayer().isAlive()) {
+                        currentPlayerAlive = false;
+                        for (int i = 0; i < gameModel.getField().getTiles().size(); i++) {
+                            if (gameModel.getField().getTile(i).isSweep()) {
+                                if (gameModel.getField().getTile(i).isBomb()) {
+                                    BackgroundImage backgroundImage = new BackgroundImage(bomb, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                    Background background = new Background(backgroundImage);
+                                    Button button = (Button) tilePane.getChildren().get(i);
+                                    button.setBackground(background);
+                                } else {
+                                    BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                    Background background = new Background(backgroundImage);
+                                    Button button = (Button) tilePane.getChildren().get(i);
+                                    button.setBackground(background);
+                                }
                             }
-                            else
-                            {
-                                BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-                                Background background = new Background(backgroundImage);
-                                Button button = (Button) tilePane.getChildren().get(i);
-                                button.setBackground(background);
+                        }
+                        if (!hasShownGameOver) {
+                            try {
+                                TimeUnit.SECONDS.sleep(5);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            hasShownGameOver = true;
+                        }
+                        gameoverLabel.setVisible(true);
+
+                    } else {
+                        for (int i = 0; i < gameModel.getField().getTiles().size(); i++) {
+                            if (gameModel.getField().getTile(i).isSweep()) {
+                                if (gameModel.getField().getTile(i).isBomb()) {
+                                    BackgroundImage backgroundImage = new BackgroundImage(bomb, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                    Background background = new Background(backgroundImage);
+                                    Button button = (Button) tilePane.getChildren().get(i);
+                                    button.setBackground(background);
+                                } else {
+                                    BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                                    Background background = new Background(backgroundImage);
+                                    Button button = (Button) tilePane.getChildren().get(i);
+                                    button.setBackground(background);
+                                }
                             }
                         }
                     }
-                    if (!hasShownGameOver)
-                    {
-                        try {
-                            TimeUnit.SECONDS.sleep(5);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        hasShownGameOver = true;
-                    }
-                    gameoverLabel.setVisible(true);
-
                 }
-                else
-                {
-                    for (int i =0; i<gameModel.getField().getTiles().size(); i++)
-                    {
-                        if (gameModel.getField().getTile(i).isSweep())
-                        {
-                            if (gameModel.getField().getTile(i).isBomb())
-                            {
-                                BackgroundImage backgroundImage = new BackgroundImage(bomb, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-                                Background background = new Background(backgroundImage);
-                                Button button = (Button) tilePane.getChildren().get(i);
-                                button.setBackground(background);
-                            }
-                            else
-                            {
-                                BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-                                Background background = new Background(backgroundImage);
-                                Button button = (Button) tilePane.getChildren().get(i);
-                                button.setBackground(background);
-                            }
-                        }
+
+                if (currentPlayerAlive && numOfPlayers == 1) {
+                    winnerLabel.setVisible(true);
                 }
             }
-        }
-
-        if (currentPlayerAlive&&numOfPlayers==1)
-        {
-            winnerLabel.setVisible(true);
-        }
+        });
 
     }
 
@@ -139,6 +126,7 @@ public class GameView extends View
         this.gameModel = gameModel;
         this.clientController = clientController;
         new Thread(clientController).start();
+        gameModel.attach(this);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Game/field.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();

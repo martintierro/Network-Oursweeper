@@ -1,5 +1,7 @@
 package Network;
 
+import Game.Tile;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.*;
