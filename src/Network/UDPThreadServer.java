@@ -69,7 +69,6 @@ public class UDPThreadServer extends Thread{
         DatagramPacket sendPacket =
                 new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
 
-        //System.out.println("FROM CLIENT: received");
         serverSocket.send(sendPacket);
     }
 
@@ -96,10 +95,7 @@ public class UDPThreadServer extends Thread{
         //ServerController serverController = new ServerController(getPlayers());
         byte[] receiveData = new byte[1024];
 
-        System.out.println (serverController.getGameModel().getCurrentPlayer().getName());
-
         while (serverController.getGameModel().isOver()) {
-            System.out.println("IN");
             receivePacket =
                     new DatagramPacket(receiveData, receiveData.length);
             try {
@@ -167,8 +163,5 @@ public class UDPThreadServer extends Thread{
                 server.sendPacket(objectToData, IPAddress);
             }
         }*/
-
     }
-
-
 }
