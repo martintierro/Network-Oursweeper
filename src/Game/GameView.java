@@ -1,6 +1,7 @@
 package Game;
 
 import Network.ClientController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -49,84 +50,87 @@ public class GameView extends View
     @Override
     public void update()
     {
-        currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
-        winnerLabel.setVisible(false);
-        int numOfPlayers = 0;
-        boolean currentPlayerAlive = true;
-        hasShownGameOver = false;
-        String aliveTemp = "Alive: ";
-        for (Player player: gameModel.getPlayers())
-        {
-            if (player.isAlive())
-            {
-                aliveTemp = aliveTemp + "  "+ player.getName();
-                numOfPlayers++;
-            }
 
-
-            if (player.getName().equals(this.player.getName()))
+        Platform.runLater( () -> {
+            System.out.println("Current Player: " + gameModel.getCurrentPlayer().getName());
+            currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
+            winnerLabel.setVisible(false);
+            int numOfPlayers = 0;
+            boolean currentPlayerAlive = true;
+            hasShownGameOver = false;
+            String aliveTemp = "Alive: ";
+            for (Player player: gameModel.getPlayers())
             {
-                if (!gameModel.getCurrentPlayer().isAlive())
+                if (player.isAlive())
                 {
-                    currentPlayerAlive = false;
-                    for (Tile e: gameModel.getField().getTiles())
-                    {
-                        if (e.isSweep())
-                        {
-                            int index = gameModel.getField().getTiles().indexOf(e);
+                    aliveTemp = aliveTemp + "  "+ player.getName();
+                    numOfPlayers++;
+                }
 
-                            if (e.isBomb())
+
+                if (player.getName().equals(this.player.getName()))
+                {
+                    if (!gameModel.getCurrentPlayer().isAlive())
+                    {
+                        currentPlayerAlive = false;
+                        for (Tile e: gameModel.getField().getTiles())
+                        {
+                            if (e.isSweep())
                             {
-                                tilePane.getChildren().remove(index);
-                                tilePane.getChildren().add(index, createButtonTile(bomb));
+                                int index = gameModel.getField().getTiles().indexOf(e);
+
+                                if (e.isBomb())
+                                {
+                                    tilePane.getChildren().remove(index);
+                                    tilePane.getChildren().add(index, createButtonTile(bomb));
+                                }
+                                else
+                                {
+                                    tilePane.getChildren().remove(index);
+                                    tilePane.getChildren().add(index, createButtonTile(dirtHole));
+                                }
                             }
-                            else
+                        }
+                        if (!hasShownGameOver)
+                        {
+                            try {
+                                TimeUnit.SECONDS.sleep(5);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            hasShownGameOver = true;
+                        }
+                        gameoverLabel.setVisible(true);
+
+                    }
+                    else
+                    {
+                        for (Tile e: gameModel.getField().getTiles())
+                        {
+                            if (e.isSweep())
                             {
+                                int index = gameModel.getField().getTiles().indexOf(e);
+
                                 tilePane.getChildren().remove(index);
                                 tilePane.getChildren().add(index, createButtonTile(dirtHole));
                             }
-                        }
-                    }
-                    if (!hasShownGameOver)
-                    {
-                        try {
-                            TimeUnit.SECONDS.sleep(5);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        hasShownGameOver = true;
-                    }
-                    gameoverLabel.setVisible(true);
+                            else if (e.isBomb()&&e.isSweep())
+                            {
+                                int index = gameModel.getField().getTiles().indexOf(e);
 
-                }
-                else
-                {
-                    for (Tile e: gameModel.getField().getTiles())
-                    {
-                        if (e.isSweep())
-                        {
-                            int index = gameModel.getField().getTiles().indexOf(e);
-
-                            tilePane.getChildren().remove(index);
-                            tilePane.getChildren().add(index, createButtonTile(dirtHole));
-                        }
-                        else if (e.isBomb()&&e.isSweep())
-                        {
-                            int index = gameModel.getField().getTiles().indexOf(e);
-
-                            tilePane.getChildren().remove(index);
-                            tilePane.getChildren().add(index, createButtonTile(bomb));
+                                tilePane.getChildren().remove(index);
+                                tilePane.getChildren().add(index, createButtonTile(bomb));
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (currentPlayerAlive&&numOfPlayers==1)
-        {
-            winnerLabel.setVisible(true);
-        }
-
+            if (currentPlayerAlive&&numOfPlayers==1)
+            {
+                winnerLabel.setVisible(true);
+            }
+        });
     }
 
 
