@@ -77,12 +77,16 @@ public class GameView extends View
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
                                     button.setDisable(true);
+                                    button.setVisible(true);
+                                    button.setOpacity(1.0);
                                 } else {
                                     BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
                                     Background background = new Background(backgroundImage);
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
                                     button.setDisable(true);
+                                    button.setVisible(true);
+                                    button.setOpacity(1.0);
                                 }
                             }
                         }
@@ -99,12 +103,16 @@ public class GameView extends View
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
                                     button.setDisable(true);
+                                    button.setVisible(true);
+                                    button.setOpacity(1.0);
                                 } else {
                                     BackgroundImage backgroundImage = new BackgroundImage(dirtHole, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
                                     Background background = new Background(backgroundImage);
                                     Button button = (Button) tilePane.getChildren().get(i);
                                     button.setBackground(background);
                                     button.setDisable(true);
+                                    button.setVisible(true);
+                                    button.setOpacity(1.0);
                                 }
                             }
                         }
