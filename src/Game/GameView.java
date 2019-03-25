@@ -111,10 +111,9 @@ public class GameView extends View
                         }
                     }
                 }
-
-                if (currentPlayerAlive && numOfPlayers == 1) {
-                    winnerLabel.setVisible(true);
-                }
+            }
+            if (currentPlayerAlive && numOfPlayers == 1) {
+                winnerLabel.setVisible(true);
             }
         });
 
