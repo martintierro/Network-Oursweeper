@@ -44,11 +44,12 @@ public class GameView extends View
 
     private Stage currentStage;
     private Player player;
-    private @FXML Label aliveLabel, gameoverLabel;
+    private @FXML Label aliveLabel, gameoverLabel, currentPlayerLabel;
 
     @Override
     public void update()
     {
+        currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
         winnerLabel.setVisible(false);
         int numOfPlayers = 0;
         boolean currentPlayerAlive = true;
@@ -154,6 +155,7 @@ public class GameView extends View
         //playerLabel = new Label();
         playerLabel.setText(player.getName());
         System.out.println(player.getName());
+        currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
 
     }
 
