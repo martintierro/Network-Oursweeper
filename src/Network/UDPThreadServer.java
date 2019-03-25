@@ -1,6 +1,7 @@
 package Network;
 
 import Game.GameModel;
+import Game.GameState;
 import Game.Player;
 import Game.Tile;
 
@@ -112,9 +113,14 @@ public class UDPThreadServer extends Thread{
             int tile = Integer.parseInt(stringTile);
             //intTile = (Integer) Blob.toObject(receivePacket.getData());
             System.out.println("Tile index: " + tile);
-            System.out.println("Tile Clicked");
+            //System.out.println("Tile Clicked");
 
-            new Thread(new Responder(serverSocket, serverController, getIPAddresses(), tile, port)).start();
+            GameState GS = serverController.getNextState(tile);
+
+            new Thread(new Responder(serverSocket, serverController, getIPAddresses(), GS, port)).start();
+            System.out.println("Sent Tile");
+            System.out.println ("Is Game over: " + serverController.getGameModel().isOver());
+
         }
     }
 
@@ -162,7 +168,7 @@ public class UDPThreadServer extends Thread{
         server.run2(server);
         server.stop();
 
-        while (!server.getServerController().getGameModel().isOver())
+        //while (!server.getServerController().getGameModel().isOver())
             server.run();
 
         /*while (!serverController.getGameModel().isOver()) {
