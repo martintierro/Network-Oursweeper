@@ -194,6 +194,7 @@ public class GameView extends View
                     @Override
                     public void handle(MouseEvent event) {
                     if (player.getName().equals(gameModel.getCurrentPlayer().getName())) {
+                        System.out.println(button.getId());
                         clientController.sweepNextTile(Integer.parseInt(button.getId()));
                     }
                     }
