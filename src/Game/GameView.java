@@ -121,7 +121,7 @@ public class GameView extends View
                 hasShownGameOver = true;
                 gameoverLabel.setVisible(true);
             }
-            if (currentPlayerAlive && numOfPlayers == 1) {
+            if (gameModel.isOver() && player.isAlive()) {
                 winnerLabel.setVisible(true);
             }
         });
