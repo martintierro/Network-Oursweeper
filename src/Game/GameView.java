@@ -132,7 +132,9 @@ public class GameView extends View
         this.player = player;
         this.gameModel = gameModel;
         this.clientController = clientController;
-        new Thread(clientController).start();
+        Thread clientThread = new Thread(clientController);
+        clientThread.setDaemon(true);
+        clientThread.start();
         gameModel.attach(this);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Game/field.fxml"));
         fxmlLoader.setController(this);
