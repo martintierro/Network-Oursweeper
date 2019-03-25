@@ -21,6 +21,7 @@ public class UDPClient implements Serializable{
     }
 
     public void sendPacket(Object o) throws Exception{
+        clientSocket.setSoTimeout(30000);
         byte[] sendData = new byte[1024];
         if (o instanceof String)
             sendData = ((String) o).getBytes();
