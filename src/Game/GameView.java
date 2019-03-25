@@ -51,6 +51,7 @@ public class GameView extends View
     public void update()
     {
         Platform.runLater( () -> {
+            aliveLabel.setText("");
             System.out.println("Current Player: " + gameModel.getCurrentPlayer().getName());
             currentPlayerLabel.setText("Current Player: " + gameModel.getCurrentPlayer().getName());
             winnerLabel.setVisible(false);
@@ -124,6 +125,8 @@ public class GameView extends View
             if (gameModel.isOver() && player.isAlive()) {
                 winnerLabel.setVisible(true);
             }
+
+            aliveLabel.setText(aliveTemp);
         });
 
     }
