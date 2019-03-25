@@ -8,19 +8,19 @@ public class GameState implements Serializable {
     private Player currentPlayer;
     private ArrayList<Integer> sweepedTileIndeces;
     private boolean over;
-    private ArrayList<Integer> alivePlayers;
+    private ArrayList<Integer> deadPlayers;
 
     public GameState(GameModel game){
         sweepedTileIndeces = new ArrayList<>();
-        alivePlayers = new ArrayList<>();
+        deadPlayers = new ArrayList<>();
         currentPlayer = game.getCurrentPlayer();
         for(Tile tile:game.getField().getTiles())
             if(tile.isSweep())
                 sweepedTileIndeces.add(game.getField().getTiles().indexOf(tile));
         over = game.isOver();
         for(Player player:game.getPlayers())
-            if(player.isAlive())
-                alivePlayers.add(game.getPlayers().indexOf(player));
+            if(!player.isAlive())
+                deadPlayers.add(game.getPlayers().indexOf(player));
     }
 
     public Player getCurrentPlayer() {
@@ -35,7 +35,7 @@ public class GameState implements Serializable {
         return over;
     }
 
-    public ArrayList<Integer> getAlivePlayers() {
-        return alivePlayers;
+    public ArrayList<Integer> getDeadPlayers() {
+        return deadPlayers;
     }
 }

@@ -2,7 +2,6 @@ package Network;
 
 import Game.GameModel;
 import Game.GameState;
-import Game.Tile;
 
 import java.io.Serializable;
 
@@ -27,8 +26,8 @@ public class ClientController implements Runnable, Serializable {
         clientModel.setOver(nextState.isOver());
         for(int tileIndex:nextState.getSweepedTileIndeces())
             clientModel.getField().getTiles().get(tileIndex).setSweep(true);
-        for(int playerIndex:nextState.getAlivePlayers())
-            clientModel.getPlayers().get(playerIndex).setAlive(true);
+        for(int playerIndex:nextState.getDeadPlayers())
+            clientModel.getPlayers().get(playerIndex).setAlive(false);
         clientModel.setCurrentPlayer(nextState.getCurrentPlayer());
         clientModel.notifyViews();
     }
