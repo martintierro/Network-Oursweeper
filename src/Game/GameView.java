@@ -149,8 +149,18 @@ public class GameView extends View
         tilePane.setVgap(1.0); tilePane.setHgap(1.0);
         for(int i = 0; i < 100; i++){
             Button tempButton = createButtonTile(dirt);
-            tempButton.setId(Integer.toString(i));
+            //tempButton.setId(Integer.toString(i));
             tilePane.getChildren().add(tempButton);
+            int num = i;
+            tempButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            if (player.getName().equals(gameModel.getCurrentPlayer().getName())) {
+                                clientController.sweepNextTile(num);
+                            }
+                        }
+                    });
         }
 
         borderPane.setCenter(tilePane);
@@ -189,16 +199,6 @@ public class GameView extends View
                     }
                 });
 
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                    if (player.getName().equals(gameModel.getCurrentPlayer().getName())) {
-                        System.out.println(button.getId());
-                        clientController.sweepNextTile(Integer.parseInt(button.getId()));
-                    }
-                    }
-                });
 
         return button;
     }
