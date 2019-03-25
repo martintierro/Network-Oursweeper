@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="701.0" fitWidth="714.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Pictures/war.jpg" />
          </image>
       </ImageView>
-      <BorderPane fx:id="borderPane" layoutX="90.0" layoutY="58.0" prefHeight="520.0" prefWidth="520.0" visible="false" />
+      <BorderPane fx:id="borderPane" layoutX="90.0" layoutY="58.0" prefHeight="520.0" prefWidth="520.0" />
       <Label fx:id="playerLabel" layoutX="22.0" layoutY="640.0" text="Player Name" textFill="WHITE">
          <font>
             <Font name="Chalkduster" size="26.0" />
