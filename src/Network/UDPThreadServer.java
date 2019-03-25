@@ -54,7 +54,7 @@ public class UDPThreadServer extends Thread{
             IPAddresses.add(IPAddress);
             Players.add(new Player(player));
         }
-        //System.out.println("FROM CLIENT: received");
+        System.out.println("FROM CLIENT: received");
         System.out.println ("Port: " + port);
     }
 
@@ -67,7 +67,7 @@ public class UDPThreadServer extends Thread{
         DatagramPacket sendPacket =
                 new DatagramPacket(sendData, sendData.length, IPAddress, port);
 
-        System.out.println("FROM CLIENT: received");
+        //System.out.println("FROM CLIENT: received");
         serverSocket.send(sendPacket);
     }
 
@@ -153,6 +153,7 @@ public class UDPThreadServer extends Thread{
         while (counter > server.getIPAddresses().size()) {
             server.receiveStateConnection();
             server.sendPacketConnection();
+            System.out.println("Num of players: " + server.getPlayers().size());
         }
 
         server.run2(server);

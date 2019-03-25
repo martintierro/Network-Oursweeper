@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="701.0" fitWidth="714.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -25,7 +25,7 @@
             <Font name="Chalkduster" size="21.0" />
          </font>
       </Label>
-      <Label fx:id="winnerLabel" layoutX="165.0" layoutY="305.0" prefHeight="17.0" prefWidth="354.0" text="WINNER" textFill="#ffc600">
+      <Label fx:id="winnerLabel" layoutX="165.0" layoutY="305.0" prefHeight="17.0" prefWidth="354.0" text="WINNER" textFill="#ffc600" visible="false">
          <font>
             <Font name="Chalkduster" size="77.0" />
          </font>
