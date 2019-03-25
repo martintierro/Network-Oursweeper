@@ -13,9 +13,6 @@ public class Blob implements Serializable{
         try (
             ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
             ObjectOutputStream OOS = new ObjectOutputStream(BAOS);) {
-            if(o instanceof Integer)
-                OOS.writeInt((int)o);
-            else
             OOS.writeObject(o);
             stream = BAOS.toByteArray();
             OOS.close();

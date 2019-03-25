@@ -4,6 +4,7 @@ import Game.GameModel;
 import Game.Player;
 import Game.Tile;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -20,7 +21,7 @@ public class UDPThreadServer extends Thread{
     private DatagramPacket receivePacket;
     //private int port;
     private int playerNum;
-    private Tile tile;
+    //private int intTile;
 
     private ArrayList<InetAddress> IPAddresses;
     private ArrayList<Player> Players;
@@ -40,7 +41,7 @@ public class UDPThreadServer extends Thread{
             e.printStackTrace();
         }
         port = new HashMap<>();
-        tile = null;
+        //intTile = 0;
     }
 
     public void receiveStateConnection() throws Exception {
@@ -97,7 +98,7 @@ public class UDPThreadServer extends Thread{
         //ServerController serverController = new ServerController(getPlayers());
         byte[] receiveData = new byte[1024];
 
-        while (serverController.getGameModel().isOver()) {
+        while (!serverController.getGameModel().isOver()) {
             System.out.println("Tile Received");
             receivePacket =
                     new DatagramPacket(receiveData, receiveData.length);
@@ -106,7 +107,11 @@ public class UDPThreadServer extends Thread{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            tile = (Tile)Blob.toObject(receivePacket.getData());
+
+            String stringTile = new String(receivePacket.getData()).trim();
+            int tile = Integer.parseInt(stringTile);
+            //intTile = (Integer) Blob.toObject(receivePacket.getData());
+            System.out.println("Tile index: " + tile);
             System.out.println("Tile Clicked");
 
             new Thread(new Responder(serverSocket, serverController, getIPAddresses(), tile, port)).start();
