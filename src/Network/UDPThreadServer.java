@@ -27,6 +27,7 @@ public class UDPThreadServer extends Thread{
     private ArrayList<InetAddress> IPAddresses;
     private ArrayList<Player> Players;
     private HashMap<InetAddress, Integer> port;
+    private boolean timedOut;
     //private byte[] objectToData;
 
     public ServerController serverController;
@@ -38,6 +39,7 @@ public class UDPThreadServer extends Thread{
         Players = new ArrayList<>();
         try {
             serverSocket = new DatagramSocket(1234);
+            serverSocket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -139,12 +141,37 @@ public class UDPThreadServer extends Thread{
             start();*/
     }
 
+    public void checkReceived() {
+        byte[] receiveData = new byte[1024];
+         try{
+             DatagramPacket checkReceivePacket =
+                     new DatagramPacket(receiveData, receiveData.length);
+             serverSocket.receive(checkReceivePacket);
+             String returnMessage = new String(receivePacket.getData()).trim();
+             int returnNum = Integer.parseInt(returnMessage);
+
+             if (returnNum == 1)
+                 timedOut = false;
+
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+    }
+
     public ServerController getServerController() {
         return serverController;
     }
 
     public void setServerController (ServerController serverController) {
         this.serverController = serverController;
+    }
+
+    public void setTimedOutToTrue() {
+        this.timedOut = true;
+    }
+
+    public boolean getTimedOut() {
+        return timedOut;
     }
 
 
@@ -159,7 +186,12 @@ public class UDPThreadServer extends Thread{
 
         while (counter > server.getIPAddresses().size()) {
             server.receiveStateConnection();
-            server.sendPacketConnection();
+
+            server.setTimedOutToTrue();
+            while (server.getTimedOut()) {
+                server.sendPacketConnection();
+                server.checkReceived();
+            }
             System.out.println("Num of players: " + server.getPlayers().size());
         }
 

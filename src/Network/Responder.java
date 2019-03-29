@@ -17,9 +17,15 @@ public class Responder implements Runnable, Serializable {
     private byte[] data;
     private Blob blob;
     private HashMap<InetAddress, Integer> port;
+    private boolean timedOut;
 
     public Responder(DatagramSocket socket, ServerController serverController, ArrayList<InetAddress> IPAddresses, GameState GS, HashMap<InetAddress, Integer> port) {
         this.socket = socket;
+        try {
+            socket.setSoTimeout(1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         this.serverController = serverController;
         this.IPAddresses = IPAddresses;
         this.GS = GS;
@@ -37,11 +43,34 @@ public class Responder implements Runnable, Serializable {
 
             DatagramPacket sendPacket =
                     new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
-            try {
-                socket.send(sendPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            timedOut = true;
+
+            while (timedOut) {
+                try {
+                    socket.send(sendPacket);
+                    checkReceived();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }
+    }
+
+    public void checkReceived() {
+        byte[] receiveData = new byte[1024];
+        try{
+            DatagramPacket checkReceivePacket =
+                    new DatagramPacket(receiveData, receiveData.length);
+            socket.receive(checkReceivePacket);
+            String returnMessage = new String(checkReceivePacket.getData()).trim();
+            int returnNum = Integer.parseInt(returnMessage);
+
+            if (returnNum == 1)
+                timedOut = false;
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
