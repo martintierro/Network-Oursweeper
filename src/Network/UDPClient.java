@@ -21,7 +21,7 @@ public class UDPClient implements Serializable{
     }
 
     public void sendPacket(Object o) throws Exception{
-        //clientSocket.setSoTimeout(30000);
+
         boolean sent = false;
         byte[] sendData = new byte[1024];
         if (o instanceof String)
@@ -31,9 +31,10 @@ public class UDPClient implements Serializable{
         DatagramPacket datagramPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, serverPort );
         while(!sent) {
             clientSocket.send(datagramPacket);
+            System.out.println("Sent Packet");
             sent = checkAcknowledgement();
         }
-        System.out.println("Sent Packet");
+        System.out.println("Sent Confirmed");
     }
 
     public Object receivePacket() throws Exception{
@@ -56,6 +57,11 @@ public class UDPClient implements Serializable{
     }
 
     public boolean checkAcknowledgement(){
+        try {
+            clientSocket.setSoTimeout(1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         byte[] receiveData = new byte[1024];
         try{
             DatagramPacket checkReceivePacket =
@@ -67,6 +73,11 @@ public class UDPClient implements Serializable{
                 return true;
         } catch (SocketTimeoutException e) {
             System.out.println ("Packet not received");
+            try {
+                clientSocket = new DatagramSocket();
+            } catch (SocketException e1) {
+                e1.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
