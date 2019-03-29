@@ -69,6 +69,8 @@ public class Responder implements Runnable, Serializable {
             if (returnNum == 1)
                 timedOut = false;
 
+        } catch (SocketTimeoutException e) {
+            System.out.println ("Packet not received");
         } catch (IOException e) {
             e.printStackTrace();
         }

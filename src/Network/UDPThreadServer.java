@@ -7,10 +7,7 @@ import Game.Tile;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,6 +150,8 @@ public class UDPThreadServer extends Thread{
              if (returnNum == 1)
                  timedOut = false;
 
+         } catch (SocketTimeoutException e) {
+            System.out.println ("Packet not received");
          } catch (IOException e) {
              e.printStackTrace();
          }
