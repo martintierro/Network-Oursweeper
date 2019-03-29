@@ -22,13 +22,17 @@ public class UDPClient implements Serializable{
 
     public void sendPacket(Object o) throws Exception{
         //clientSocket.setSoTimeout(30000);
+        boolean sent = false;
         byte[] sendData = new byte[1024];
         if (o instanceof String)
             sendData = ((String) o).getBytes();
         else
             sendData = Blob.toStream(o);
         DatagramPacket datagramPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, serverPort );
-        clientSocket.send(datagramPacket);
+        while(!sent) {
+            clientSocket.send(datagramPacket);
+            sent = checkAcknowledgement();
+        }
         System.out.println("Sent Packet");
     }
 
@@ -38,6 +42,7 @@ public class UDPClient implements Serializable{
         byte[] receiveData = new byte[1048576];
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
+        sendAcknowledgement();
         return Blob.toObject(receivePacket.getData());
     }
 
@@ -46,36 +51,41 @@ public class UDPClient implements Serializable{
         DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
         serverPort =  receivePacket.getPort();
+        sendAcknowledgement();
         return new String(receivePacket.getData(), receivePacket.getOffset(), receivePacket.getLength());
     }
 
-    public static void main(String args[]) throws Exception {
-        BufferedReader inFromUser =
-                new BufferedReader(new InputStreamReader(System.in));
-
-        DatagramSocket clientSocket = new DatagramSocket();
-
-        //InetAddress IPAddress = InetAddress.getByName("localhost");
-        InetAddress IPAddress = InetAddress.getByName("localhost");
-        byte[] sendData = new byte[1024];
+    public boolean checkAcknowledgement(){
         byte[] receiveData = new byte[1024];
+        try{
+            DatagramPacket checkReceivePacket =
+                    new DatagramPacket(receiveData, receiveData.length);
+            clientSocket.receive(checkReceivePacket);
+            String returnMessage = new String(checkReceivePacket.getData()).trim();
+            int returnNum = Integer.parseInt(returnMessage);
+            if (returnNum == 1)
+                return true;
+        } catch (SocketTimeoutException e) {
+            System.out.println ("Packet not received");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-        String sentence = inFromUser.readLine();
-        sendData = sentence.getBytes();
+    public void sendAcknowledgement(){
+        byte[] sendData = new byte[1024];
+
+        String capitalizedSentence = new String("1");
+        sendData = capitalizedSentence.getBytes();
 
         DatagramPacket sendPacket =
-                new DatagramPacket(sendData, sendData.length, IPAddress, 1234);
+                new DatagramPacket(sendData, sendData.length, serverIPAddress, serverPort);
 
-        clientSocket.send(sendPacket);
-
-        DatagramPacket receivePacket =
-                new DatagramPacket (receiveData, receiveData.length);
-
-        clientSocket.receive(receivePacket);
-
-        String modifiedSentence = new String (receivePacket.getData());
-
-        System.out.println("FROM SERVER: " + modifiedSentence);
-        clientSocket.close();
+        try {
+            clientSocket.send(sendPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
