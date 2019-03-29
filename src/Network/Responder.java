@@ -49,7 +49,7 @@ public class Responder implements Runnable, Serializable {
             while (timedOut) {
                 try {
                     socket.send(sendPacket);
-                    checkReceived();
+                    checkAcknowledgement();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -57,7 +57,7 @@ public class Responder implements Runnable, Serializable {
         }
     }
 
-    public void checkReceived() {
+    public void checkAcknowledgement() {
         byte[] receiveData = new byte[1024];
         try{
             DatagramPacket checkReceivePacket =

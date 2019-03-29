@@ -102,6 +102,7 @@ public class UDPThreadServer extends Thread{
                     new DatagramPacket(receiveData, receiveData.length);
             try {
                 serverSocket.receive(receivePacket);
+                sendAcknowledgement();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -138,7 +139,7 @@ public class UDPThreadServer extends Thread{
             start();*/
     }
 
-    public void checkReceived() {
+    public void checkAcknowledgement() {
         byte[] receiveData = new byte[1024];
          try{
              DatagramPacket checkReceivePacket =
@@ -155,6 +156,22 @@ public class UDPThreadServer extends Thread{
          } catch (IOException e) {
              e.printStackTrace();
          }
+    }
+
+    public void sendAcknowledgement(){
+        byte[] sendData = new byte[1024];
+
+        String capitalizedSentence = new String("1");
+        sendData = capitalizedSentence.getBytes();
+
+        DatagramPacket sendPacket =
+                new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
+
+        try {
+            serverSocket.send(sendPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public ServerController getServerController() {
@@ -185,11 +202,12 @@ public class UDPThreadServer extends Thread{
 
         while (counter > server.getIPAddresses().size()) {
             server.receiveStateConnection();
+            server.sendAcknowledgement();
 
             server.setTimedOutToTrue();
             while (server.getTimedOut()) {
                 server.sendPacketConnection();
-                server.checkReceived();
+                server.checkAcknowledgement();
             }
             System.out.println("Num of players: " + server.getPlayers().size());
         }
