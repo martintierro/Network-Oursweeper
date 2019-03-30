@@ -59,7 +59,7 @@ public class UDPClient implements Serializable{
 
     public boolean checkAcknowledgement(){
         try {
-            clientSocket.setSoTimeout(1000);
+            clientSocket.setSoTimeout(20000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
