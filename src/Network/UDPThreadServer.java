@@ -36,9 +36,9 @@ public class UDPThreadServer extends Thread{
         Players = new ArrayList<>();
         try {
             serverSocket = new DatagramSocket(1234);
-            serverSocket.setSoTimeout(1000);
+            serverSocket.setSoTimeout(200000000);
         } catch (SocketException e) {
-            e.printStackTrace();
+            System.out.println ("Connection Timed Out");
         }
         port = new HashMap<>();
         //intTile = 0;
@@ -94,15 +94,24 @@ public class UDPThreadServer extends Thread{
     }
 
     public void run() {
+        System.out.println("In RUN");
         //ServerController serverController = new ServerController(getPlayers());
         while (!serverController.getGameModel().isOver()) {
             byte[] receiveData = new byte[1024];
-            System.out.println("Tile Received");
             receivePacket =
                     new DatagramPacket(receiveData, receiveData.length);
             try {
+                System.out.println("TRYING TO RECEIVE");
                 serverSocket.receive(receivePacket);
-                sendAcknowledgement();
+                System.out.println("Tile Received");
+                sendAcknowledgement(receivePacket.getAddress());
+            } catch (SocketTimeoutException e) {
+                System.out.println ("Packet not received");
+                try {
+                    serverSocket = new DatagramSocket(1234);
+                } catch (SocketException e1) {
+                    e1.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,28 +119,34 @@ public class UDPThreadServer extends Thread{
             String stringTile = new String(receivePacket.getData()).trim();
             int tile = Integer.parseInt(stringTile);
             //intTile = (Integer) Blob.toObject(receivePacket.getData());
-            System.out.println("Tile index: " + tile);
+            //System.out.println("Tile index: " + tile);
             //System.out.println("Tile Clicked");
 
             GameState GS = serverController.getNextState(tile);
 
-            new Thread(new Responder(serverSocket, serverController, getIPAddresses(), GS, port)).start();
-            System.out.println("Sent Tile");
-            System.out.println ("Is Game over: " + serverController.getGameModel().isOver());
+            //new Thread(new Responder(serverSocket, serverController, getIPAddresses(), GS, port)).start();
+            Responder r = new Responder(serverSocket, serverController, getIPAddresses(), GS, port);
+            r.run();
+            //System.out.println("Sent Tile");
+            //System.out.println ("Is Game over: " + serverController.getGameModel().isOver());
 
         }
     }
 
     public void run2(UDPThreadServer server) {
+        System.out.println("In RUN2");
         serverController = new ServerController(server.getPlayers());
         Blob blob = new Blob();
         byte[] objectToData = blob.toStream(serverController.getGameModel());
         GameModel gm = (GameModel) blob.toObject(objectToData);
 
-        new Thread(new Responder2(serverSocket, objectToData, getIPAddresses(), port)).start();
+        //new Thread(new Responder2(serverSocket, objectToData, getIPAddresses(), port)).start();
+        Responder2 r2 = new Responder2(serverSocket, objectToData, getIPAddresses(), port);
+        r2.run();
+        System.out.println("Made Thread");
         setServerController(serverController);
 
-        System.out.println (Thread.currentThread().getState());
+        //System.out.println (Thread.currentThread().getState());
         /*if (Thread.currentThread().getState() == State.RUNNABLE)
             Thread.currentThread().stop();*/
 
@@ -145,7 +160,7 @@ public class UDPThreadServer extends Thread{
              DatagramPacket checkReceivePacket =
                      new DatagramPacket(receiveData, receiveData.length);
              serverSocket.receive(checkReceivePacket);
-             String returnMessage = new String(receivePacket.getData()).trim();
+             String returnMessage = new String(checkReceivePacket.getData()).trim();
              int returnNum = Integer.parseInt(returnMessage);
 
              if (returnNum == 1)
@@ -156,9 +171,11 @@ public class UDPThreadServer extends Thread{
          } catch (IOException e) {
              e.printStackTrace();
          }
+
+        System.out.println("Got Acknowledgement");
     }
 
-    public void sendAcknowledgement(){
+    public void sendAcknowledgement(InetAddress IPAddress){
         byte[] sendData = new byte[1024];
 
         String capitalizedSentence = new String("1");
@@ -167,11 +184,14 @@ public class UDPThreadServer extends Thread{
         DatagramPacket sendPacket =
                 new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
 
+        //System.out.println ("IPAddress: " + IPAddress);
+
         try {
             serverSocket.send(sendPacket);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Sent Acknowledgement");
     }
 
     public ServerController getServerController() {
@@ -190,6 +210,9 @@ public class UDPThreadServer extends Thread{
         return timedOut;
     }
 
+    public InetAddress getIPAddress() {
+        return IPAddress;
+    }
 
     public static void main(String args[]) throws Exception
     {
@@ -202,18 +225,18 @@ public class UDPThreadServer extends Thread{
 
         while (counter > server.getIPAddresses().size()) {
             server.receiveStateConnection();
-            server.sendAcknowledgement();
+            server.sendAcknowledgement(server.getIPAddress());
 
-            server.setTimedOutToTrue();
+            /*server.setTimedOutToTrue();
             while (server.getTimedOut()) {
                 server.sendPacketConnection();
                 server.checkAcknowledgement();
-            }
+            }*/
             System.out.println("Num of players: " + server.getPlayers().size());
         }
 
         server.run2(server);
-        server.stop();
+
 
         //while (!server.getServerController().getGameModel().isOver())
             server.run();

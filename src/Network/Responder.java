@@ -50,10 +50,12 @@ public class Responder implements Runnable, Serializable {
                 try {
                     socket.send(sendPacket);
                     checkAcknowledgement();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println("Sent Game State");
         }
     }
 
@@ -74,5 +76,6 @@ public class Responder implements Runnable, Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Got Acknowledgement");
     }
 }

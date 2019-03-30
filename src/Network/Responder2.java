@@ -16,17 +16,19 @@ public class Responder2 implements Runnable, Serializable {
 
     public Responder2(DatagramSocket socket, byte[] data, ArrayList<InetAddress> IPAddresses, HashMap<InetAddress, Integer> port) {
         this.socket = socket;
-        try {
+        /*try {
             socket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
-        }
+        }*/
         this.data = data;
         this.IPAddresses = IPAddresses;
         this.port = port;
     }
 
     public void run() {
+        System.out.println("In Responder2");
+
         for (InetAddress IPAddress : IPAddresses) {
             byte[] sendData = new byte[1024];
             sendData = data;
@@ -42,10 +44,12 @@ public class Responder2 implements Runnable, Serializable {
                 try {
                     socket.send(sendPacket);
                     checkAcknowledgement();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println("Sent Game Model");
         }
     }
 
@@ -66,5 +70,6 @@ public class Responder2 implements Runnable, Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Got Acknowledgement");
     }
 }

@@ -1,13 +1,15 @@
 package Network;
 
+import Game.GameModel;
+import Game.GameState;
 import Game.Player;
+import Game.Tile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UDPServer {
@@ -15,48 +17,142 @@ public class UDPServer {
     private InetAddress IPAddress;
     private DatagramSocket serverSocket;
     private DatagramPacket receivePacket;
-    private int port;
     private int playerNum;
 
     private ArrayList<InetAddress> IPAddresses;
     private ArrayList<Player> Players;
-    //private byte[] objectToData;
+    private HashMap<InetAddress, Integer> port;
+    private boolean timedOut;
 
-    //private ServerController serverController;
+    private ServerController serverController;
 
     public UDPServer() {
-        //serverController = new ServerController();
+        serverController = null;
         playerNum = 0;
         IPAddresses = new ArrayList<>();
         Players = new ArrayList<>();
+        port = new HashMap<>();
+
         try {
             serverSocket = new DatagramSocket(1234);
+            serverSocket.setSoTimeout(100000);
         } catch (SocketException e) {
-            e.printStackTrace();
+            System.out.println ("Connection Timed Out");
         }
+
     }
 
-    public void receiveStateConnection() throws Exception {
+    public void receiveStateConnection() throws Exception, SocketException {
         byte[] receiveData = new byte[1024];
 
         receivePacket =
                 new DatagramPacket(receiveData, receiveData.length);
+
         serverSocket.receive(receivePacket);
         String player = new String(receivePacket.getData());
 
         IPAddress = receivePacket.getAddress();
-        port = receivePacket.getPort();
-
+        port.put(IPAddress, receivePacket.getPort());
 
         if (!IPAddresses.contains(IPAddress)) {
             IPAddresses.add(IPAddress);
             Players.add(new Player(player));
         }
-        //System.out.println("FROM CLIENT: received");
+
         System.out.println ("Port: " + port);
     }
 
-    public int receiveState() throws Exception {
+    public void sendPacketConnection() throws Exception {
+        byte[] sendData = new byte[1024];
+
+        String capitalizedSentence = new String(receivePacket.getData());
+        sendData = capitalizedSentence.getBytes();
+
+        DatagramPacket sendPacket =
+                new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
+
+        System.out.println("FROM CLIENT: received");
+        serverSocket.send(sendPacket);
+    }
+
+    public void sendGameModel(UDPServer server) throws Exception {
+        System.out.println ("Sending Game Model");
+
+        serverController = new ServerController(server.getPlayers());
+        byte[] objectToData = Blob.toStream(serverController.getGameModel());
+        //GameModel GM = (GameModel) blob.toObject(objectToData);
+
+        for(InetAddress IPAddress: IPAddresses) {
+            byte[] sendData = new byte[1024];
+            sendData = objectToData;
+
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
+
+            timedOut = true;
+            while(timedOut) {
+                try{
+                    serverSocket.send(sendPacket);
+                    checkAcknowledgement();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            System.out.println("Sent Game Model");
+        }
+    }
+
+    public void receiveGameState() throws Exception{
+        System.out.println("Sending Game State");
+
+        while (!serverController.getGameModel().isOver()) {
+            byte[] receiveData = new byte[1024];
+            receivePacket = new DatagramPacket(receiveData, receiveData.length);
+
+            try{
+                serverSocket.receive(receivePacket);
+                sendAcknowledgement(receivePacket.getAddress());
+            } catch (SocketTimeoutException e) {
+                System.out.println("Packet not received");
+                serverSocket = new DatagramSocket();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String sTile = new String (receivePacket.getData()).trim();
+        int tile = Integer.parseInt(sTile);
+        Blob.toObject(receivePacket.getData());
+
+        GameState GS = serverController.getNextState(tile);
+
+        sendGameState(GS);
+    }
+
+    public void sendGameState(GameState GS) throws Exception {
+        byte[] objectToData = Blob.toStream(GS);
+
+        for (InetAddress IPAddress: IPAddresses) {
+            byte[] sendData = new byte[1024];
+            sendData = objectToData;
+
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
+
+            timedOut = true;
+            while(timedOut) {
+                try{
+                    serverSocket.send(sendPacket);
+                    checkAcknowledgement();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            System.out.println("Send Game State");
+        }
+    }
+
+    /*public int receiveState() throws Exception {
         byte[] receiveData = new byte[1024];
 
         receivePacket =
@@ -70,22 +166,9 @@ public class UDPServer {
         //port = receivePacket.getPort();
 
         //System.out.println ("Port: " + port);
-    }
+    }*/
 
-    public void sendPacketConnection() throws Exception {
-        byte[] sendData = new byte[1024];
-
-        String capitalizedSentence = new String(receivePacket.getData());
-        sendData = capitalizedSentence.getBytes();
-
-        DatagramPacket sendPacket =
-                new DatagramPacket(sendData, sendData.length, IPAddress, port);
-
-        System.out.println("FROM CLIENT: received");
-        serverSocket.send(sendPacket);
-    }
-
-    public void sendPacket(byte[] object, InetAddress IPAddress) throws Exception {
+    /*public void sendPacket(byte[] object, InetAddress IPAddress) throws Exception {
 
         byte[] sendData = new byte[1024];
 
@@ -100,6 +183,54 @@ public class UDPServer {
 
             serverSocket.send(sendPacket);
         //}
+    }*/
+
+    public void checkAcknowledgement() {
+        byte[] receiveData = new byte[1024];
+        try{
+            DatagramPacket checkReceivePacket =
+                    new DatagramPacket(receiveData, receiveData.length);
+            serverSocket.receive(checkReceivePacket);
+            String returnMessage = new String(checkReceivePacket.getData()).trim();
+            int returnNum = Integer.parseInt(returnMessage);
+
+            if (returnNum == 1)
+                timedOut = false;
+
+        } catch (SocketTimeoutException e) {
+            System.out.println ("Packet not received");
+            try{
+                serverSocket = new DatagramSocket();
+            } catch (SocketException e1) {
+                e1.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Got Acknowledgement");
+    }
+
+    public void sendAcknowledgement(InetAddress IPAddress){
+        byte[] sendData = new byte[1024];
+
+        String capitalizedSentence = new String("1");
+        sendData = capitalizedSentence.getBytes();
+
+        DatagramPacket sendPacket =
+                new DatagramPacket(sendData, sendData.length, IPAddress, port.get(IPAddress));
+
+        //System.out.println ("IPAddress: " + IPAddress);
+
+        try {
+            serverSocket.send(sendPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Sent Acknowledgement");
+    }
+
+    public ServerController getServerController() {
+        return serverController;
     }
 
     public ArrayList<InetAddress> getIPAddresses() {
@@ -114,6 +245,14 @@ public class UDPServer {
         return playerNum;
     }
 
+    public InetAddress getIPAddress() {
+        return IPAddress;
+    }
+
+    public boolean getTimedOut() {
+        return timedOut;
+    }
+
     public void setPlayerNum() {
         System.out.println ("Input no. of players: ");
         Scanner sc = new Scanner(System.in);
@@ -123,19 +262,27 @@ public class UDPServer {
 
     public static void main(String args[]) throws Exception
     {
-        Blob blob = new Blob();
         UDPServer server = new UDPServer();
-        byte[] objectToData;
 
         server.setPlayerNum();
         int counter = server.getPlayerNum();
 
         while (counter > server.getIPAddresses().size()) {
             server.receiveStateConnection();
-            server.sendPacketConnection();
+            server.sendAcknowledgement(server.getIPAddress());
+
+            while(server.getTimedOut()) {
+                server.sendPacketConnection();
+                server.checkAcknowledgement();
+            }
+
+            System.out.println("Num of players: " + server.getPlayers().size());
         }
 
-        ServerController serverController = new ServerController(server.getPlayers());
+        server.sendGameModel(server);
+        server.receiveGameState();
+
+        /*ServerController serverController = new ServerController(server.getPlayers());
         objectToData = blob.toStream(serverController.getGameModel());
 
         for (InetAddress IPAddress: server.getIPAddresses()) {
@@ -147,7 +294,7 @@ public class UDPServer {
                 objectToData = blob.toStream(serverController.getNextState(server.receiveState()));
                 server.sendPacket(objectToData, IPAddress);
             }
-        }
+        }*/
 
     }
 }
