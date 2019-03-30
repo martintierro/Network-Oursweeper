@@ -59,7 +59,7 @@ public class UDPClient implements Serializable{
 
     public boolean checkAcknowledgement(){
         try {
-            clientSocket.setSoTimeout(20000);
+            clientSocket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -70,8 +70,10 @@ public class UDPClient implements Serializable{
             clientSocket.receive(checkReceivePacket);
             String returnMessage = new String(checkReceivePacket.getData()).trim();
             int returnNum = Integer.parseInt(returnMessage);
-            if (returnNum == 1)
+            if (returnNum == 1) {
+                clientSocket.setSoTimeout(0);
                 return true;
+            }
         } catch (SocketTimeoutException e) {
             System.out.println ("Packet not received");
             try {
