@@ -74,9 +74,9 @@ public class LoginView extends View implements Serializable {
             String name = usernameTextField.getText();
             GM = loginController.getModel();
             Player yourPlayer = null;
+
             for(Player player:GM.getPlayers()) {
-                //System.out.println("Name1: " + player.getName() + "tt");
-                if (player.getName().compareTo(name)== 0) {
+                if (player.getName().trim().equals(name)) {
                     System.out.println("Name2: " + player.getName());
                     yourPlayer = player;
                 }
