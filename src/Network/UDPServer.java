@@ -271,10 +271,10 @@ public class UDPServer {
             server.receiveStateConnection();
             server.sendAcknowledgement(server.getIPAddress());
 
-            while(server.getTimedOut()) {
+            /*while(server.getTimedOut()) {
                 server.sendPacketConnection();
                 server.checkAcknowledgement();
-            }
+            }*/
 
             System.out.println("Num of players: " + server.getPlayers().size());
         }
