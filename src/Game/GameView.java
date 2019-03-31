@@ -40,7 +40,7 @@ public class GameView extends View
 
     private GameModel gameModel;
     private ClientController clientController;
-
+    private Thread clientThread;
     private TilePane tilePane;
 
     private Stage currentStage;
@@ -148,7 +148,7 @@ public class GameView extends View
         this.player = player;
         this.gameModel = gameModel;
         this.clientController = clientController;
-        Thread clientThread = new Thread(clientController);
+        clientThread = new Thread(clientController);
         clientThread.setDaemon(true);
         clientThread.start();
         gameModel.attach(this);
@@ -172,7 +172,11 @@ public class GameView extends View
                         @Override
                         public void handle(MouseEvent event) {
                             if (player.getName().equals(gameModel.getCurrentPlayer().getName())) {
+                                clientThread.stop();
                                 clientController.sweepNextTile(num);
+                                clientThread = new Thread(clientController);
+                                clientThread.setDaemon(true);
+                                clientThread.start();
                             }
                         }
                     });
