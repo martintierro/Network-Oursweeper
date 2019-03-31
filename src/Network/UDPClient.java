@@ -33,7 +33,6 @@ public class UDPClient implements Serializable{
             clientSocket.send(datagramPacket);
             System.out.println("Sent Packet");
             sent = checkAcknowledgement();
-            System.out.println("Got Acknowledgement");
         }
         System.out.println("Sent Confirmed");
     }
@@ -77,7 +76,7 @@ public class UDPClient implements Serializable{
         } catch (SocketTimeoutException e) {
             System.out.println ("Packet not received");
             try {
-                clientSocket = new DatagramSocket();
+                clientSocket.setSoTimeout(0);
             } catch (SocketException e1) {
                 e1.printStackTrace();
             }
