@@ -103,18 +103,17 @@ public class UDPServer {
     }
 
     public void receiveGameState() throws Exception{
-        System.out.println("Sending Game State");
 
         while (!serverController.getGameModel().isOver()) {
+            System.out.println("Waiting for move");
             byte[] receiveData = new byte[1024];
             receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
 
                 serverSocket.receive(receivePacket);
                 sendAcknowledgement(receivePacket.getAddress());
+            System.out.println("Generating state");
 
-
-            Thread.sleep(1000);
             String sTile = new String(receivePacket.getData()).trim();
             int tile = Integer.parseInt(sTile);
             //Blob.toObject(receivePacket.getData());
@@ -126,6 +125,7 @@ public class UDPServer {
     }
 
     public void sendGameState(GameState GS) throws Exception {
+        System.out.println("Sending Game State");
         byte[] objectToData = Blob.toStream(GS);
 
         for (InetAddress IPAddress: IPAddresses) {
