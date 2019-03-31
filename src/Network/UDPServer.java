@@ -35,7 +35,7 @@ public class UDPServer {
 
         try {
             serverSocket = new DatagramSocket(1234);
-            serverSocket.setSoTimeout(100000);
+            //serverSocket.setSoTimeout(100000);
         } catch (SocketException e) {
             System.out.println ("Connection Timed Out");
         }
@@ -109,24 +109,20 @@ public class UDPServer {
             byte[] receiveData = new byte[1024];
             receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-            try{
+
                 serverSocket.receive(receivePacket);
                 sendAcknowledgement(receivePacket.getAddress());
-            } catch (SocketTimeoutException e) {
-                System.out.println("Packet not received");
-                serverSocket = new DatagramSocket();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+
+            Thread.sleep(1000);
+            String sTile = new String(receivePacket.getData()).trim();
+            int tile = Integer.parseInt(sTile);
+            //Blob.toObject(receivePacket.getData());
+
+            GameState GS = serverController.getNextState(tile);
+
+            sendGameState(GS);
         }
-
-        String sTile = new String (receivePacket.getData()).trim();
-        int tile = Integer.parseInt(sTile);
-        Blob.toObject(receivePacket.getData());
-
-        GameState GS = serverController.getNextState(tile);
-
-        sendGameState(GS);
     }
 
     public void sendGameState(GameState GS) throws Exception {
@@ -186,6 +182,12 @@ public class UDPServer {
     }*/
 
     public void checkAcknowledgement() {
+        System.out.println("Waiting for Acknowledgement");
+        try {
+            serverSocket.setSoTimeout(1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         byte[] receiveData = new byte[1024];
         try{
             DatagramPacket checkReceivePacket =
@@ -194,13 +196,16 @@ public class UDPServer {
             String returnMessage = new String(checkReceivePacket.getData()).trim();
             int returnNum = Integer.parseInt(returnMessage);
 
-            if (returnNum == 1)
+            if (returnNum == 1) {
+                serverSocket.setSoTimeout(0);
                 timedOut = false;
+            }
 
         } catch (SocketTimeoutException e) {
             System.out.println ("Packet not received");
             try{
-                serverSocket = new DatagramSocket();
+                //serverSocket = new DatagramSocket(1234);
+                serverSocket.setSoTimeout(0);
             } catch (SocketException e1) {
                 e1.printStackTrace();
             }
