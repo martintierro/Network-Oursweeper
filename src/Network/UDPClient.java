@@ -68,7 +68,14 @@ public class UDPClient implements Serializable{
                     new DatagramPacket(receiveData, receiveData.length);
             clientSocket.receive(checkReceivePacket);
             String returnMessage = new String(checkReceivePacket.getData()).trim();
-            int returnNum = Integer.parseInt(returnMessage);
+            int returnNum = 0;
+            try {
+                returnNum = Integer.parseInt(returnMessage);
+            }catch (NumberFormatException ne){
+                clientSocket.setSoTimeout(0);
+                System.out.println("Received wrong ack");
+                return false;
+            }
             if (returnNum == 1) {
                 clientSocket.setSoTimeout(0);
                 return true;
