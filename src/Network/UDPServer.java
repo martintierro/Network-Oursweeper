@@ -112,6 +112,7 @@ public class UDPServer {
 
                 serverSocket.receive(receivePacket);
                 sendAcknowledgement(receivePacket.getAddress());
+                sendAcknowledgement(receivePacket.getAddress());
             System.out.println("Generating state");
 
             String sTile = new String(receivePacket.getData()).trim();
