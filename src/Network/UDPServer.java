@@ -149,43 +149,10 @@ public class UDPServer {
         }
     }
 
-    /*public int receiveState() throws Exception {
-        byte[] receiveData = new byte[1024];
-
-        receivePacket =
-                new DatagramPacket(receiveData, receiveData.length);
-        serverSocket.receive(receivePacket);
-        String stringTile = new String(receivePacket.getData());
-        int intTile = Integer.parseInt(stringTile);
-
-        return intTile;
-        //IPAddress = receivePacket.getAddress();
-        //port = receivePacket.getPort();
-
-        //System.out.println ("Port: " + port);
-    }*/
-
-    /*public void sendPacket(byte[] object, InetAddress IPAddress) throws Exception {
-
-        byte[] sendData = new byte[1024];
-
-       // while(true) {
-            sendData = object;
-
-            DatagramPacket sendPacket =
-                    new DatagramPacket(sendData, sendData.length, IPAddress, port);
-
-            //System.out.println("FROM CLIENT: " + sentence);
-            //System.out.println("FROM CLIENT: received");
-
-            serverSocket.send(sendPacket);
-        //}
-    }*/
-
     public void checkAcknowledgement() {
         System.out.println("Waiting for Acknowledgement");
         try {
-            serverSocket.setSoTimeout(1000);
+            serverSocket.setSoTimeout(15000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -277,30 +244,11 @@ public class UDPServer {
             server.receiveStateConnection();
             server.sendAcknowledgement(server.getIPAddress());
 
-            /*while(server.getTimedOut()) {
-                server.sendPacketConnection();
-                server.checkAcknowledgement();
-            }*/
-
             System.out.println("Num of players: " + server.getPlayers().size());
         }
 
         server.sendGameModel(server);
         server.receiveGameState();
-
-        /*ServerController serverController = new ServerController(server.getPlayers());
-        objectToData = blob.toStream(serverController.getGameModel());
-
-        for (InetAddress IPAddress: server.getIPAddresses()) {
-            server.sendPacket(objectToData, IPAddress);
-        }
-
-        while (!serverController.getGameModel().isOver()) {
-            for (InetAddress IPAddress: server.getIPAddresses()) {
-                objectToData = blob.toStream(serverController.getNextState(server.receiveState()));
-                server.sendPacket(objectToData, IPAddress);
-            }
-        }*/
 
     }
 }
