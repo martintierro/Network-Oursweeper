@@ -18,9 +18,9 @@ public class GameController {
         else
             currPlayerIndex++;
         while(!game.getPlayers().get(currPlayerIndex).isAlive()) {
-            currPlayerIndex++;
             if(currPlayerIndex+1>=game.getPlayers().size())
                 currPlayerIndex = 0;
+            else currPlayerIndex++;
         }
         Player nextPlayer = game.getPlayers().get(currPlayerIndex);
         game.setCurrentPlayer(nextPlayer);
