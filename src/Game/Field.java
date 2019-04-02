@@ -12,7 +12,7 @@ public class Field implements Serializable{
         tiles = new ArrayList<>();
         for(int i=0 ; i<100 ; i++){
             tiles.add(new Tile());
-            if(random.nextInt(2)==0)
+            if(random.nextInt(3)==0)
                 this.tiles.get(i).setBomb(true);
         }
     }

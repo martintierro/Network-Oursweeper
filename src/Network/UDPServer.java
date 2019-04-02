@@ -152,7 +152,7 @@ public class UDPServer {
     public void checkAcknowledgement() {
         System.out.println("Waiting for Acknowledgement");
         try {
-            serverSocket.setSoTimeout(15000);
+            serverSocket.setSoTimeout(5000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
